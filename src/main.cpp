@@ -9,39 +9,23 @@
 #endif
 #include "ESPAsyncWebServer.h"
 #include "SPIFFS.h"
+#include "webgui.h"
 
 AsyncWebServer server(80);
-
 const char* ssid = "Automathaus";
 const char* password = "AutomatPass2023";
-
-const char* PARAM_MESSAGE = "message";
 
 void notFound(AsyncWebServerRequest *request) {
     request->send(404, "text/plain", "Not found");
 }
 
 void setup() {
-
     Serial.begin(115200);
 
     if(!SPIFFS.begin(true)){
         Serial.println("Not able to mount SPIFFS");
         return;
     }
-
-    // File file = SPIFFS.open("/index.html");
-    // if(!file){
-    //     Serial.println("Failed to open file");
-    //     return;
-    // }
-
-    // Serial.println(" Content:");
-    // while(file.available()){
-    //     Serial.write(file.read());
-    // }
-    // file.close();
-
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
@@ -54,37 +38,12 @@ void setup() {
     Serial.println(WiFi.localIP());
 
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/index.html");
-    });
-
-    // Send a GET request to <IP>/get?message=<message>
-    server.on("/get", HTTP_GET, [] (AsyncWebServerRequest *request) {
-        String message;
-        if (request->hasParam(PARAM_MESSAGE)) {
-            message = request->getParam(PARAM_MESSAGE)->value();
-        } else {
-            message = "No message sent";
-        }
-        request->send(200, "text/plain", "Hello, GET: " + message);
-    });
-
-    // Send a POST request to <IP>/post with a form field message set to <message>
-    server.on("/post", HTTP_POST, [](AsyncWebServerRequest *request){
-        String message;
-        if (request->hasParam(PARAM_MESSAGE, true)) {
-            message = request->getParam(PARAM_MESSAGE, true)->value();
-        } else {
-            message = "No message sent";
-        }
-        request->send(200, "text/plain", "Hello, POST: " + message);
+        request->send_P(200, "text/html", INDEX_HTML);
     });
 
     server.onNotFound(notFound);
-
     server.begin();
 }
-
-
 
 void loop() {
   
