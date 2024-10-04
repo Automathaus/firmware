@@ -34,7 +34,7 @@ void setup() {
         return;
     }
 
-    Serial.print("IP Address: ");
+    Serial.print("IP Address:");
     Serial.println(WiFi.localIP());
 
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -45,6 +45,4 @@ void setup() {
     server.begin();
 }
 
-void loop() {
-  
-}
+void loop() {}

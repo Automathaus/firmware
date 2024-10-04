@@ -18,7 +18,7 @@
 
 <nav class="fixed p-3 md:p-5 w-full flex items-center justify-between backdrop-blur-md bg-white/80 dark:bg-zinc-950/80 z-50">
     <div class="flex items-center space-x-3 ">
-         <LogoAutomat class="size-7 lg:size-9"/>
+        <LogoAutomat class="size-7 lg:size-9"/>
         <h2 class="text-xl lg:text-2xl">
             Automathaus<span class="text-zinc-500/30">.dev</span>
         </h2>
