@@ -24,21 +24,19 @@
     import * as Accordion from "$lib/components/ui/accordion";
 
     import { Toggle } from "$lib/components/ui/toggle/index.js";
+    import type { WifiNetwork } from "$lib/types";
 
-    const wifiNetworks = [
+    const wifiNetworks: WifiNetwork[] = [
         {
-            value: "network1",
-            label: "Network 1",
+            ssid: "Automathaus",
             signalStrength: 3,
         },
         {
-            value: "network2",
-            label: "Network 2",
+            ssid: "Vodaphone",
             signalStrength: 2,
         },
         {
-            value: "network3",
-            label: "Network 3",
+            ssid: "T-Mobile",
             signalStrength: 1,
         },
     ];
@@ -47,7 +45,6 @@
 </script>
 
 <ModeWatcher />
-<!-- <Navbar/> -->
 <div class="w-full min-h-svh flex items-center justify-center overflow-hidden relative">
     <div class="flex flex-col space-y-4 z-10">
         

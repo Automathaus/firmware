@@ -12,14 +12,14 @@
     import { WifiHigh } from 'lucide-svelte';
     import { Wifi } from 'lucide-svelte';
 
-    export let items = [];
+    import type { WifiNetwork } from "$lib/types";
+
+    export let items: WifiNetwork[] = [];
 
     let open = false;
     let value = "";
 
-    $: selectedValue =
-        items.find((f) => f.value === value)?.label ??
-        "Select a wifi network...";
+    $: selectedValue = items.find((f) => f.ssid === value)?.ssid ?? "Select a wifi network...";
 
     function closeAndFocusTrigger(triggerId: string) {
         open = false;
@@ -54,7 +54,7 @@
             <Command.Group>
                 {#each items as item}
                     <Command.Item
-                        value={item.value}
+                        value={item.ssid}
                         onSelect={(currentValue) => {
                             value = currentValue;
                             closeAndFocusTrigger(ids.trigger);
@@ -70,12 +70,12 @@
                     {:else}
                     <Wifi class="mr-2 h-4 w-4"/>
                     {/if}
-                    {item.label}
+                    {item.ssid}
 
                     <Check
                         class={cn(
                             "ml-auto h-4 w-4",
-                            value !== item.value && "text-transparent",
+                            value !== item.ssid && "text-transparent",
                         )}
                     />
                     </Command.Item>
