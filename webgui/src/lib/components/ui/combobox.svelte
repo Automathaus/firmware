@@ -12,30 +12,6 @@
     import { WifiHigh } from 'lucide-svelte';
     import { Wifi } from 'lucide-svelte';
 
-
-    // const frameworks = [
-    //     {
-    //         value: "sveltekit",
-    //         label: "SvelteKit",
-    //     },
-    //     {
-    //         value: "next.js",
-    //         label: "Next.js",
-    //     },
-    //     {
-    //         value: "nuxt.js",
-    //         label: "Nuxt.js",
-    //     },
-    //     {
-    //         value: "remix",
-    //         label: "Remix",
-    //     },
-    //     {
-    //         value: "astro",
-    //         label: "Astro",
-    //     },
-    // ];
-
     export let items = [];
 
     let open = false;
@@ -45,9 +21,6 @@
         items.find((f) => f.value === value)?.label ??
         "Select a wifi network...";
 
-    // We want to refocus the trigger button when the user selects
-    // an item from the list so users can continue navigating the
-    // rest of the form with the keyboard.
     function closeAndFocusTrigger(triggerId: string) {
         open = false;
         tick().then(() => {
@@ -56,7 +29,7 @@
     }
 </script>
 
-<Popover.Root bind:open let:ids id="{$$props.id}">
+<Popover.Root bind:open let:ids disableFocusTrap={true}>
     <Popover.Trigger asChild let:builder>
         <Button
             builders={[builder]}
@@ -64,6 +37,7 @@
             role="combobox"
             aria-expanded={open}
             class="justify-between"
+            id="{$$props.id}"
         >
             {selectedValue}
             <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />

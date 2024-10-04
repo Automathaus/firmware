@@ -12,8 +12,8 @@
 #include "webgui.h"
 
 AsyncWebServer server(80);
-const char* ssid = "AutomathausD";
-const char* password = "AutomatPass1234";
+const char* ssid = "Automathaus";
+const char* password = "AutomatPass2023";
 
 void notFound(AsyncWebServerRequest *request) {
     request->send(404, "text/plain", "Not found");

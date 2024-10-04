@@ -26,7 +26,7 @@
 
     
     <div class="md:flex items-center space-x-3">
-        <Button variant="outline" class="hidden md:flex">
+        <!-- <Button variant="outline" class="hidden md:flex">
             <House class="mr-2 h-4 w-4"/>
             Home
         </Button>
@@ -41,7 +41,7 @@
         <Button class="hidden md:flex">
             <Github class="mr-2 h-4 w-4"/>
             Github
-        </Button>
+        </Button> -->
 
         <DarkmodeButton class="hidden md:flex" />
 
