@@ -12,7 +12,7 @@ def build_vite_and_generate_header():
     project_dir = env.get('PROJECT_DIR', os.getcwd())
     webgui_dir = os.path.join(project_dir, 'webgui')
     dist_dir = os.path.join(webgui_dir, 'dist')
-    include_dir = os.path.join(project_dir, 'include')
+    include_dir = os.path.join(project_dir, 'lib', 'Automathaus', 'src')
     
     # Ensure the include directory exists
     os.makedirs(include_dir, exist_ok=True)
