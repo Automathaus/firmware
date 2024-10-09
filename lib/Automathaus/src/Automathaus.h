@@ -15,9 +15,9 @@
 
 class Automathaus {
 private:
-    AutomathausWebServer *webServer;
-    AutomathausNetworking *networking;
-    AutomathausState state;
+    AutomathausWebServer *_webServer;
+    AutomathausNetworking *_networking;
+    AutomathausState _state;
 
 public:
     Automathaus(AutomathausNetworking *networking, AutomathausWebServer *webServer);

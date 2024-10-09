@@ -13,8 +13,8 @@
 
 class AutomathausESPWifiNetworking : public AutomathausNetworking {
     private:
-        char ssid[33];
-        char password[65];
+        char _ssid[33];
+        char _password[65];
 
     public:
         AutomathausESPWifiNetworking(const char* ssid, const char* password);

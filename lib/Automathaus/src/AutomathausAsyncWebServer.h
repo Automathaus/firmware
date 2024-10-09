@@ -15,10 +15,10 @@
 // Implementazione dell'interfaccia AutomathausWebServer
 class AutomathausAsyncWebServer : public AutomathausWebServer {
    private:
-    AsyncWebServer *server;
+    AsyncWebServer *_server;
 
    public:
-    AutomathausAsyncWebServer(AsyncWebServer *server) : server(server) {};
+    AutomathausAsyncWebServer(AsyncWebServer *server) : _server(server) {};
     ~AutomathausAsyncWebServer();
 
     void setWebInterface(const char *webPage) override;

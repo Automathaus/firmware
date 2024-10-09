@@ -9,9 +9,9 @@ typedef enum {
 
 class AutomathausNetworking {
     protected:
-        ConnectionStatus connectionStatus = NET_DISCONNECTED;
-        char IPAddress[16];
-        char MACAddress[18];
+        ConnectionStatus _connectionStatus = NET_DISCONNECTED;
+        char _IPAddress[16];
+        char _MACAddress[18];
         
     public:
         AutomathausNetworking() {};
