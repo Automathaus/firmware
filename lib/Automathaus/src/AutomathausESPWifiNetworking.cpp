@@ -28,7 +28,7 @@ void AutomathausESPWifiNetworking::connectToNetwork() {
         return;
     }
 
-    WiFi.mode(NET_STA);
+    WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     if (WiFi.waitForConnectResult() != WL_CONNECTED) {
         connectionStatus = NET_FAILED;
