@@ -15,18 +15,22 @@
 #include "AutomathausWebServer.h"
 #include "AutomathausAsyncWebServer.h"
 #include "AutomathausState.h"
+#include "AutomathausNetworking.h"
+#include "AutomathausESPWifiNetworking.h"
+
 
 class Automathaus {
-public:
-    Automathaus(AutomathausWebServer *webServer);
-    ~Automathaus();
-
-    void start();
-    AutomathausState getState();
-
 private:
     AutomathausWebServer *webServer;
+    AutomathausNetworking *networking;
     AutomathausState state;
+
+public:
+    Automathaus(AutomathausNetworking *networking, AutomathausWebServer *webServer);
+    ~Automathaus();
+
+    void start(int serialBaudrate = 115200);
+    AutomathausState getState();
 };
 
 #endif // AUTOMATHAUS_H
