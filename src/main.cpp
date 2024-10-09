@@ -1,12 +1,12 @@
 #include "Automathaus.h"
 
-AsyncWebServer server(80);
-AutomathausAsyncWebServer automathausWebServer(&server);
-AutomathausESPWifiNetworking automathausWifiNetworking("Automathaus", "AutomatPass2023");
-Automathaus automathaus(&automathausWifiNetworking, &automathausWebServer);
+#define WIFI_SSID "Automathaus"
+#define WIFI_PASSWORD "AutomatPass2023"
 
-// const char* ssid = "H3140-74454476";
-// const char* password = "Zk7FZEUSuz";
+AsyncWebServer server(80);
+AutomathausAsyncWebServer automathausWebServer(server);
+AutomathausESPWifiNetworking automathausWifiNetworking(WIFI_SSID, WIFI_PASSWORD);
+Automathaus automathaus(automathausWifiNetworking, automathausWebServer);
 
 void setup() {
     automathaus.start();

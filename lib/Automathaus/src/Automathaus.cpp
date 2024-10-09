@@ -1,7 +1,7 @@
 #include "Automathaus.h"
 #include "AutomathausLogo.h"
 
-Automathaus::Automathaus(AutomathausNetworking *networking, AutomathausWebServer *webServer) : _networking(networking), _webServer(webServer) {}
+Automathaus::Automathaus(AutomathausNetworking &networking, AutomathausWebServer &webServer) : _networking(networking), _webServer(webServer) {}
 
 Automathaus::~Automathaus() {}
 
@@ -14,11 +14,11 @@ void Automathaus::start(int serialBaudrate){
 
     _state = NODE_SETUP;
 
-    _networking->connectToNetwork();
-    if (_networking->getConnectionStatus() == NET_CONNECTED) {
-        _webServer->setWebInterface(INDEX_HTML);
-        _webServer->onNotFound();
-        _webServer->begin();
+    _networking.connectToNetwork();
+    if (_networking.getConnectionStatus() == NET_CONNECTED) {
+        _webServer.setWebInterface(INDEX_HTML);
+        _webServer.onNotFound();
+        _webServer.begin();
     } else {
         // state = NODE_ERROR;
         Serial.println("Automathaus Error");

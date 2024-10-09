@@ -15,12 +15,12 @@
 
 class Automathaus {
 private:
-    AutomathausWebServer *_webServer;
-    AutomathausNetworking *_networking;
+    AutomathausWebServer &_webServer;
+    AutomathausNetworking &_networking;
     AutomathausState _state;
 
 public:
-    Automathaus(AutomathausNetworking *networking, AutomathausWebServer *webServer);
+    Automathaus(AutomathausNetworking &networking, AutomathausWebServer &webServer);
     ~Automathaus();
 
     void start(int serialBaudrate = 115200);
