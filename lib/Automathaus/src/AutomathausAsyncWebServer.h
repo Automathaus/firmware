@@ -1,7 +1,15 @@
 #ifndef AUTOMATHAUSASYNCWEBSERVER_H
 #define AUTOMATHAUSASYNCWEBSERVER_H
 
-#include "Automathaus.h"
+#ifdef ESP32
+#include <WiFi.h>
+#include <AsyncTCP.h>
+#elif defined(ESP8266)
+#include <ESP8266WiFi.h>
+#include <ESPAsyncTCP.h>
+#endif
+#include <ESPAsyncWebServer.h>
+
 #include "AutomathausWebServer.h"
 
 // Implementazione dell'interfaccia AutomathausWebServer
@@ -13,7 +21,7 @@ class AutomathausAsyncWebServer : public AutomathausWebServer {
     AutomathausAsyncWebServer(AsyncWebServer *server) : server(server) {};
     ~AutomathausAsyncWebServer();
 
-    void setWebInterface(AutomathausState) override;
+    void setWebInterface(const char *webPage) override;
     void onNotFound() override;
     void begin() override;
 };

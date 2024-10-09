@@ -15,8 +15,8 @@ void Automathaus::start(int serialBaudrate){
     state = NODE_SETUP;
 
     networking->connectToNetwork();
-    if (networking->getConnectionStatus() == WiFi_CONNECTED) {
-        webServer->setWebInterface(state);
+    if (networking->getConnectionStatus() == NET_CONNECTED) {
+        webServer->setWebInterface(INDEX_HTML);
         webServer->onNotFound();
         webServer->begin();
     } else {

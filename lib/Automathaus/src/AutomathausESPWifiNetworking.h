@@ -20,7 +20,7 @@ class AutomathausESPWifiNetworking : public AutomathausNetworking {
         AutomathausESPWifiNetworking(const char* ssid, const char* password);
         ~AutomathausESPWifiNetworking();
         
-        void setCredentials(const char* ssid, const char* password) override;
+        void setCredentials(const char* ssid, const char* password);
         void connectToNetwork() override;
         char* getIPAddress() override;
         char* getMACAddress() override;

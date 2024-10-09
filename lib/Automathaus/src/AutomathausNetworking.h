@@ -2,14 +2,14 @@
 #define AUTOMATHAUSNETWORKING_H
 
 typedef enum {
-    WiFi_DISCONNECTED,
-    WiFi_CONNECTED,
-    WiFi_FAILED,
+    NET_DISCONNECTED,
+    NET_CONNECTED,
+    NET_FAILED,
 } ConnectionStatus;
 
 class AutomathausNetworking {
     protected:
-        ConnectionStatus connectionStatus = WiFi_DISCONNECTED;
+        ConnectionStatus connectionStatus = NET_DISCONNECTED;
         char IPAddress[16];
         char MACAddress[18];
         
@@ -17,7 +17,6 @@ class AutomathausNetworking {
         AutomathausNetworking() {};
         virtual ~AutomathausNetworking() {};
 
-        virtual void setCredentials(const char* ssid, const char* password) = 0;
         virtual void connectToNetwork() = 0;
         virtual char* getIPAddress() = 0;
         virtual char* getMACAddress() = 0;

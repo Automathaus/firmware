@@ -1,20 +1,13 @@
 #include "AutomathausAsyncWebServer.h"
-#include "AutomathausWebServer.h"
-#include "webgui.h"
 
 AutomathausAsyncWebServer::~AutomathausAsyncWebServer() {
     // Implementazione del distruttore, se necessario
 }
 
-void AutomathausAsyncWebServer::setWebInterface(AutomathausState state){
-    switch (state){
-        case NODE_SETUP:
-            server->on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-                request->send_P(200, "text/html", INDEX_HTML);
-            });
-        break;
-        // Aggiungi altri casi se necessario
-    }
+void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
+    server->on("/", HTTP_GET, [webPage](AsyncWebServerRequest *request){
+        request->send_P(200, "text/html", webPage);
+    });   
 }
 
 void AutomathausAsyncWebServer::onNotFound(){

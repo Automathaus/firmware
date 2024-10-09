@@ -1,11 +1,3 @@
-#include <Arduino.h>
-#include <DNSServer.h>
-#ifdef ESP32
-#include <WiFi.h>
-#elif defined(ESP8266)
-#include <ESP8266WiFi.h>
-#include <ESPAsyncTCP.h>
-#endif
 #include "Automathaus.h"
 
 AsyncWebServer server(80);

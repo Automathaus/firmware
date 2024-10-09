@@ -13,7 +13,7 @@ AutomathausESPWifiNetworking::~AutomathausESPWifiNetworking() {
 void AutomathausESPWifiNetworking::setCredentials(const char* ssid, const char* password) {
     // Set the credentials for the WiFi network
     if (ssid == NULL || password == NULL) {
-        connectionStatus = WiFi_FAILED;
+        connectionStatus = NET_FAILED;
         return;
     }
 
@@ -24,17 +24,17 @@ void AutomathausESPWifiNetworking::setCredentials(const char* ssid, const char* 
 void AutomathausESPWifiNetworking::connectToNetwork() {
     // Connect to the WiFi network
     if (ssid == NULL || password == NULL) {
-        connectionStatus = WiFi_FAILED;
+        connectionStatus = NET_FAILED;
         return;
     }
 
-    WiFi.mode(WIFI_STA);
+    WiFi.mode(NET_STA);
     WiFi.begin(ssid, password);
     if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-        connectionStatus = WiFi_FAILED;
+        connectionStatus = NET_FAILED;
         return;
     }
-    connectionStatus = WiFi_CONNECTED;
+    connectionStatus = NET_CONNECTED;
 }
 
 char* AutomathausESPWifiNetworking::getIPAddress() {
