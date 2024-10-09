@@ -12,7 +12,7 @@ void AutomathausAsyncWebServer::setWebInterface(AutomathausState state){
             server->on("/", HTTP_GET, [](AsyncWebServerRequest *request){
                 request->send_P(200, "text/html", INDEX_HTML);
             });
-            break;
+        break;
         // Aggiungi altri casi se necessario
     }
 }

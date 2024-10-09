@@ -7,26 +7,29 @@
 #include <ESPAsyncTCP.h>
 #endif
 #include "Automathaus.h"
+#include "AutomathausESPWifiNetworking.h"
 
 AsyncWebServer server(80);
 AutomathausAsyncWebServer automathausWebServer(&server);
 Automathaus automathaus(&automathausWebServer);
+AutomathausESPWifiNetworking automathausWifiNetworking("Automathaus", "AutomatPass2023");
 
-const char* ssid = "H3140-74454476";
-const char* password = "Zk7FZEUSuz";
+// const char* ssid = "H3140-74454476";
+// const char* password = "Zk7FZEUSuz";
 
 void setup() {
     Serial.begin(115200);
+    automathausWifiNetworking.connectToNetwork();
+    
+    //print the connection status
+    Serial.println("Connection Status:");
+    Serial.println(automathausWifiNetworking.getConnectionStatus());
 
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
-    if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-        Serial.printf("WiFi Failed!\n");
-        return;
-    }
+    Serial.println("IP Address:");
+    Serial.println(automathausWifiNetworking.getIPAddress());
+    Serial.println("MAC Address:");
+    Serial.println(automathausWifiNetworking.getMACAddress());
 
-    Serial.print("IP Address:");
-    Serial.println(WiFi.localIP());
 
     automathaus.start();
 }
