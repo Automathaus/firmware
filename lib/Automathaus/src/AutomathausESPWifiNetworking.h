@@ -25,6 +25,8 @@ class AutomathausESPWifiNetworking : public AutomathausNetworking {
         char* getIPAddress() override;
         char* getMACAddress() override;
         ConnectionStatus getConnectionStatus() override;
+        
+        static std::string scanWifiNetworks();
 };
 
 #endif  // AUTOMATHAUSESPWIFINETWORKING_H

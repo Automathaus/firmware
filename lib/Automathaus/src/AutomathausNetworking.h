@@ -2,6 +2,7 @@
 #define AUTOMATHAUSNETWORKING_H
 
 typedef enum {
+    NET_AP_MODE,
     NET_DISCONNECTED,
     NET_CONNECTED,
     NET_FAILED,
@@ -10,8 +11,8 @@ typedef enum {
 class AutomathausNetworking {
     protected:
         ConnectionStatus _connectionStatus = NET_DISCONNECTED;
-        char _IPAddress[16];
-        char _MACAddress[18];
+        char _IPAddress[16] = {0};
+        char _MACAddress[18] = {0};
         
     public:
         AutomathausNetworking() {};

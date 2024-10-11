@@ -22,6 +22,7 @@ class AutomathausAsyncWebServer : public AutomathausWebServer {
     ~AutomathausAsyncWebServer();
 
     void setWebInterface(const char *webPage) override;
+    void setWifiScannerRoute() override;
     void onNotFound() override;
     void begin() override;
 };

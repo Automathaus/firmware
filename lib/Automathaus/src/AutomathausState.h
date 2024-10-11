@@ -10,4 +10,9 @@ typedef enum {
     RUNNING
 } AutomathausState;
 
+typedef enum {
+    WEB_SERVER_RESET_MODE,
+    WEB_SERVER_NORMAL_MODE
+} AutomathausWebServerMode;
+
 #endif  // AUTOMATHAUSSTATE_H
