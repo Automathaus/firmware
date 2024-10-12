@@ -6,11 +6,12 @@
 namespace Routes {
     constexpr char ROOT[] = "/";
     constexpr char RESET[] = "/reset";
+    constexpr char NOT_FOUND[] = "/404";
 }
 
 class AutomathausWebServer {
    protected:
-    AutomathausWebServerMode _mode;
+    AutomathausWebServerMode _mode = WEB_SERVER_NORMAL_MODE;
     constexpr static const char *JSON_TEMPLATE = "{\"route\":\"%s\"}";
 
    public:
@@ -26,7 +27,6 @@ class AutomathausWebServer {
      * @param webPage The html code for the web app
      */
     virtual void setWebInterface(const char *webPage) = 0;
-    virtual void onNotFound() = 0;
     virtual void begin() = 0;
 
     virtual void setResetMode() {

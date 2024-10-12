@@ -22,7 +22,6 @@ void Automathaus::start(int serialBaudrate){
     if (_networking.getConnectionStatus() == NET_CONNECTED) {
         _webServer.setNormalMode();
         _webServer.setWebInterface(INDEX_HTML);
-        _webServer.onNotFound();
         _webServer.begin();
         _state = CONNECTED;
     } else {

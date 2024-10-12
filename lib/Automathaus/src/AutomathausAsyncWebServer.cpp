@@ -27,11 +27,9 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     _server.on("/wifiScan", HTTP_GET, [](AsyncWebServerRequest *request) {
         request->send(200, "application/json", AutomathausESPWifiNetworking::scanWifiNetworks().c_str());
     });
-}
 
-void AutomathausAsyncWebServer::onNotFound(){
     _server.onNotFound([](AsyncWebServerRequest *request){
-        request->send(404, "text/plain", "404 - Not found");
+        request->redirect("/");
     });
 }
 

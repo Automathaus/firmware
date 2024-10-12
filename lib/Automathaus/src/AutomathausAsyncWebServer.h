@@ -21,7 +21,6 @@ class AutomathausAsyncWebServer : public AutomathausWebServer {
     ~AutomathausAsyncWebServer();
 
     void setWebInterface(const char *webPage) override;
-    void onNotFound() override;
     void begin() override;
 };
 
