@@ -11,7 +11,17 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     });
 
     _server.on("/getRoute", HTTP_GET, [this](AsyncWebServerRequest *request){
-        request->send(200, "text/json", this->getMode() == WEB_SERVER_RESET_MODE ? "{\"route\":\"/reset\"}" : "{\"route\":\"/\"}");
+        char route[128];
+
+        switch (this->getMode()) {
+            case WEB_SERVER_RESET_MODE:
+                snprintf(route, sizeof(route), JSON_TEMPLATE, Routes::RESET);
+                break;
+            case WEB_SERVER_NORMAL_MODE:
+                snprintf(route, sizeof(route), JSON_TEMPLATE, Routes::ROOT);
+                break;
+        }
+        request->send(200, "text/json", route);
     });
 
     _server.on("/wifiScan", HTTP_GET, [](AsyncWebServerRequest *request) {

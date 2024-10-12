@@ -3,9 +3,15 @@
 
 #include "AutomathausState.h"
 
+namespace Routes {
+    constexpr char ROOT[] = "/";
+    constexpr char RESET[] = "/reset";
+}
+
 class AutomathausWebServer {
    protected:
     AutomathausWebServerMode _mode;
+    constexpr static const char *JSON_TEMPLATE = "{\"route\":\"%s\"}";
 
    public:
     AutomathausWebServer(){};
