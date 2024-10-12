@@ -2,6 +2,7 @@
 #define AUTOMATHAUSWEBSERVER_H
 
 #include "AutomathausState.h"
+
 class AutomathausWebServer {
    protected:
     AutomathausWebServerMode _mode;
@@ -19,22 +20,20 @@ class AutomathausWebServer {
      * @param webPage The html code for the web app
      */
     virtual void setWebInterface(const char *webPage) = 0;
+    virtual void onNotFound() = 0;
+    virtual void begin() = 0;
 
-    /**
-     * @brief Set the wifi scanner route (/wifiScan), return a json with the name of the ssids and the strength of the signals
-     */
-    virtual void setWifiScannerRoute() = 0; // -> has to move into a child class that sets the interface for WifiNetworking
+    virtual void setResetMode() {
+        _mode = WEB_SERVER_RESET_MODE;
+    };
 
-    virtual void setMode(AutomathausWebServerMode mode) {
-        _mode = mode;
+    virtual void setNormalMode() {
+        _mode = WEB_SERVER_NORMAL_MODE;
     };
 
     virtual AutomathausWebServerMode getMode() {
         return _mode;
     };
-
-    virtual void onNotFound() = 0;
-    virtual void begin() = 0;
 };
 
 #endif  // AUTOMATHAUSWEBSERVER_H

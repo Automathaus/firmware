@@ -20,8 +20,7 @@ void Automathaus::start(int serialBaudrate){
 
     _networking.connectToNetwork();
     if (_networking.getConnectionStatus() == NET_CONNECTED) {
-        _webServer.setMode(WEB_SERVER_NORMAL_MODE);
-        _webServer.setWifiScannerRoute(); // ONLY FOR TESTING
+        _webServer.setNormalMode();
         _webServer.setWebInterface(INDEX_HTML);
         _webServer.onNotFound();
         _webServer.begin();

@@ -10,8 +10,6 @@ AutomathausESPWifiNetworking::~AutomathausESPWifiNetworking() {
 }
 
 
-
-
 // Set the credentials for the WiFi network
 void AutomathausESPWifiNetworking::setCredentials(const char* ssid, const char* password) {
     if (ssid == NULL || password == NULL) {
