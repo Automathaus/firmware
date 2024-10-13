@@ -10,7 +10,7 @@
 #include "AutomathausAsyncWebServer.h"
 #include "AutomathausState.h"
 #include "AutomathausNetworking.h"
-#include "webgui.h"
+#include "./generated/webgui.h"
 
 
 class Automathaus {

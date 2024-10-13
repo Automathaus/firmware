@@ -1,12 +1,12 @@
 
-#ifndef WEBGUI_H
-#define WEBGUI_H
+        #ifndef WEBGUI_H
+        #define WEBGUI_H
 
-#include <pgmspace.h>
+        #include <pgmspace.h>
 
-// The HTML content from the Vite build
-const char INDEX_HTML[] PROGMEM = R"=====(
-<!doctype html>
+        // The HTML content from the Vite build
+        const char INDEX_HTML[] PROGMEM = R"=====(
+        <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -51,6 +51,7 @@ const char INDEX_HTML[] PROGMEM = R"=====(
   </body>
 </html>
 
-)=====";
+        )=====";
 
-#endif // WEBGUI_H
+        #endif // WEBGUI_H
+    

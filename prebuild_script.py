@@ -28,21 +28,21 @@ def build_vite_and_generate_header():
     
     # Generate the header file content
     header_content = f"""
-#ifndef WEBGUI_H
-#define WEBGUI_H
+        #ifndef WEBGUI_H
+        #define WEBGUI_H
 
-#include <pgmspace.h>
+        #include <pgmspace.h>
 
-// The HTML content from the Vite build
-const char INDEX_HTML[] PROGMEM = R"=====(
-{html_content}
-)=====";
+        // The HTML content from the Vite build
+        const char INDEX_HTML[] PROGMEM = R"=====(
+        {html_content}
+        )=====";
 
-#endif // WEBGUI_H
-"""
+        #endif // WEBGUI_H
+    """
     
     # Write the header file
-    header_path = os.path.join(include_dir, 'webgui.h')
+    header_path = os.path.join(include_dir, 'generated', 'webgui.h')
     with open(header_path, 'w') as f:
         f.write(header_content)
     

@@ -9,6 +9,11 @@ namespace Routes {
     constexpr char NOT_FOUND[] = "/404";
 }
 
+class AutomathausWebBindings {
+public:
+    virtual ~AutomathausWebBindings() {}
+};
+
 class AutomathausWebServer {
    protected:
     AutomathausWebServerMode _mode = WEB_SERVER_NORMAL_MODE;
@@ -40,6 +45,8 @@ class AutomathausWebServer {
     virtual AutomathausWebServerMode getMode() {
         return _mode;
     };
+
+    virtual void setBindings() = 0;
 };
 
 #endif  // AUTOMATHAUSWEBSERVER_H

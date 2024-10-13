@@ -35,5 +35,6 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
 
 void AutomathausAsyncWebServer::begin(){
     (void)AutomathausESPWifiNetworking::scanWifiNetworks();
+    setBindings();
     _server.begin();
 }
