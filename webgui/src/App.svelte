@@ -4,11 +4,19 @@
     import { ModeWatcher } from "mode-watcher";
     import Navbar from "$lib/components/ui/navbar.svelte";
     import CurveThing from "$lib/components/svg/CurveThing.svelte";
+
+    import { automathausWebReset } from "$lib/automathaus/automathaus";
+    import Button from "$lib/components/ui/button/button.svelte";
+
 </script>
 
 <ModeWatcher />
 <div class="w-full min-h-svh flex items-center justify-center overflow-hidden relative">
     <NodeResetForm />
+    <Button
+        class="absolute top-4 left-4"
+        on:click={async() => console.log(await automathausWebReset.add(2,3))}
+    > Reset </Button>
 
     <CurveThing
         class="absolute -bottom-60 -left-60 -rotate-45 fill-zinc-900 size-[20rem] md:size-[25rem] lg:size-[27rem] xl:size-[30rem] scale-[2] dark:stroke-white dark:stroke-2"

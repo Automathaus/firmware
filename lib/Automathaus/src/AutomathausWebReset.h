@@ -9,6 +9,10 @@ class AutomathausWebReset : public AutomathausWebBindings {
     static void testBinding() {
         Serial.println("Test binding executed");
     };
+
+    static int addInt(int a, int b) {
+        return a + b;
+    };
 };
 
 #endif  // AUTOMATHAUSWEBRESET_H
