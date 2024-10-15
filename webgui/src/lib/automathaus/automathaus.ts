@@ -1,4 +1,5 @@
-export const automathausWebReset = {
+export const automathauswebbindtest = {
+    
     testBinding: async(): Promise<void> => {
         try {
             let response = await fetch('/bindings/AutomathausWebBindTest/testBinding', {
@@ -9,16 +10,13 @@ export const automathausWebReset = {
                 body: JSON.stringify({}),
             });
 
-            if(response.ok){
-                let data = await response.json();
-                return data.returnValue;
-            }
-        }catch(e){
+            // Optionally handle the response
+        } catch(e) {
             console.error(e);
         }
     },
 
-    add: async(a: number, b: number): Promise<number | null> => {
+    addInt: async(a: number, b: number): Promise<number | null> => {
         try {
             let response = await fetch('/bindings/AutomathausWebBindTest/addInt', {
                 method: 'POST',
@@ -32,10 +30,36 @@ export const automathausWebReset = {
                 let data = await response.json();
                 return data.returnValue;
             }
-        }catch(e){
+        } catch(e) {
             console.error(e);
         }
 
         return null;
-    }
+    },
+
+    multiplyInt: async(a: number, b: number): Promise<number | null> => {
+        try {
+            let response = await fetch('/bindings/AutomathausWebBindTest/multiplyInt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({a, b}),
+            });
+
+            if(response.ok){
+                let data = await response.json();
+                return data.returnValue;
+            }
+        } catch(e) {
+            console.error(e);
+        }
+
+        return null;
+    },
+};
+
+
+export const bindings = {
+    ...automathauswebbindtest,
 };

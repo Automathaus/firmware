@@ -13,6 +13,10 @@ class AutomathausWebBindTest : public AutomathausWebBindings {
     static int addInt(int a, int b) {
         return a + b;
     };
+
+    static int multiplyInt(int a, int b) {
+        return a * b;
+    };
 };
 
 #endif  // AUTOMATHAUSWEBBINDTEST_H
