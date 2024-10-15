@@ -1,10 +1,10 @@
-#ifndef AUTOMATHAUSWEBRESET_H
-#define AUTOMATHAUSWEBRESET_H
+#ifndef AUTOMATHAUSWEBBINDTEST_H
+#define AUTOMATHAUSWEBBINDTEST_H
 
 #include "Automathaus.h"
 #include "AutomathausWebServer.h"
 
-class AutomathausWebReset : public AutomathausWebBindings {
+class AutomathausWebBindTest : public AutomathausWebBindings {
    public:
     static void testBinding() {
         Serial.println("Test binding executed");
@@ -15,4 +15,4 @@ class AutomathausWebReset : public AutomathausWebBindings {
     };
 };
 
-#endif  // AUTOMATHAUSWEBRESET_H
+#endif  // AUTOMATHAUSWEBBINDTEST_H

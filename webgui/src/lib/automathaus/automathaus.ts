@@ -18,9 +18,9 @@ export const automathausWebReset = {
         }
     },
 
-    add: async(a: number, b: number): Promise<number | undefined> => {
+    add: async(a: number, b: number): Promise<number | null> => {
         try {
-            let response = await fetch('/bindings/AutomathausWebReset/addInt', {
+            let response = await fetch('/bindings/AutomathausWebBindTest/addInt', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,6 +36,6 @@ export const automathausWebReset = {
             console.error(e);
         }
 
-        return undefined;
+        return null;
     }
 };
