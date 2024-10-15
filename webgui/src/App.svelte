@@ -5,7 +5,7 @@
     import Navbar from "$lib/components/ui/navbar.svelte";
     import CurveThing from "$lib/components/svg/CurveThing.svelte";
 
-    import { automathauswebbindtest } from "$lib/automathaus/automathaus";
+    import { AutomathausWebBindTest } from "$lib/automathaus/automathaus";
     import Button from "$lib/components/ui/button/button.svelte";
 
 </script>
@@ -15,16 +15,16 @@
     <NodeResetForm />
     <Button
         class="absolute top-4 left-4"
-        on:click={async() => console.log(await automathauswebbindtest.addInt(2,3))}
+        on:click={async() => console.log(await AutomathausWebBindTest.addInt(2,3))}
     > Reset </Button>
     <Button
         class="absolute top-12 left-4"
-        on:click={async() => console.log(await automathauswebbindtest.multiplyInt(2,3))}
+        on:click={async() => console.log(await AutomathausWebBindTest.multiplyInt(2,3))}
     > Multiply </Button>
 
     <Button
         class="absolute top-20 left-4"
-        on:click={async() => console.log(await automathauswebbindtest.getString())}
+        on:click={async() => console.log(await AutomathausWebBindTest.getString())}
     > Get String </Button>
 
     <CurveThing

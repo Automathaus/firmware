@@ -1,4 +1,4 @@
-export const automathauswebbindtest = {
+export const AutomathausWebBindTest = {
     
     testBinding: async(): Promise<void> => {
         try {

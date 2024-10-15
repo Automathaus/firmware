@@ -111,7 +111,7 @@ def generate_ts_bindings(header_content, class_name):
 
     methods = re.findall(r'static\s+([\w<>]+(?:\s*::\s*\w+)?)\s+(\w+)\s*\((.*?)\)', header_content)
 
-    ts_bindings = f"""export const {class_name.lower()} = {{
+    ts_bindings = f"""export const {class_name} = {{
     """
 
     for return_type, method_name, params in methods:
@@ -171,7 +171,7 @@ def generate_ts_bindings(header_content, class_name):
 
 def generate_bindings():
     src_directory = automathaus_src_dir
-    cpp_binding_dir = automathaus_src_dir
+    cpp_binding_dir = os.path.join(automathaus_src_dir, 'generated')
     ts_binding_dir = os.path.join(webgui_dir, 'src', 'lib', 'automathaus')
 
     header_files = find_header_files(src_directory)
