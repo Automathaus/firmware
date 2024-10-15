@@ -2,12 +2,15 @@
 #include "AutomathausAsyncWebServer.h"
 #include "AutomathausWebBindTest.h"
 
-void AutomathausAsyncWebServer::setBindings() {
-    _server.on("/bindings/AutomathausWebBindTest/testBinding", HTTP_POST,[](AsyncWebServerRequest *request) {
+void AutomathausAsyncWebServer::setGeneratedBindings() {
+
+    //Void funcion case
+    _server.on("/bindings/AutomathausWebBindTest/testBinding", HTTP_POST, [](AsyncWebServerRequest *request) {
         AutomathausWebBindTest::testBinding();
         request->send(200, "text/plain", "{\"returnValue\": null}");
     });
 
+    //Function with return value case
     _server.on("/bindings/AutomathausWebBindTest/addInt", HTTP_POST, [](AsyncWebServerRequest *request) { 
         JsonDocument doc;
 

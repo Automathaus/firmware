@@ -21,7 +21,7 @@ class AutomathausAsyncWebServer : public AutomathausWebServer {
     ~AutomathausAsyncWebServer();
 
     void setWebInterface(const char *webPage) override;
-    void setBindings() override;
+    void setGeneratedBindings() override;
     void begin() override;
 };
 

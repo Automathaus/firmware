@@ -1,7 +1,7 @@
 export const automathausWebReset = {
     testBinding: async(): Promise<void> => {
         try {
-            let response = await fetch('/bindings/AutomathausWebReset/testBinding', {
+            let response = await fetch('/bindings/AutomathausWebBindTest/testBinding', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ export const automathausWebReset = {
 
             if(response.ok){
                 let data = await response.json();
-                console.log(data);
+                return data.returnValue;
             }
         }catch(e){
             console.error(e);

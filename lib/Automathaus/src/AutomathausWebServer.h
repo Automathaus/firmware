@@ -59,7 +59,7 @@ class AutomathausWebServer {
         return _mode;
     };
 
-    virtual void setBindings() = 0;
+    virtual void setGeneratedBindings() = 0;
 };
 
 #endif  // AUTOMATHAUSWEBSERVER_H
