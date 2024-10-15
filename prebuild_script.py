@@ -66,9 +66,18 @@ def generate_cpp_handler(return_type, method_name, params, class_name):
         }}
 
 """
+        if return_type == 'std::string':
+            # Generate the call and response
+            handler_code += f"""        auto returnValue = {class_name}::{method_name}({', '.join([f'v{i}' for i in range(1, len(names)+1)])});
 
-        # Generate the call and response
-        handler_code += f"""        auto returnValue = {class_name}::{method_name}({', '.join([f'v{i}' for i in range(1, len(names)+1)])});
+        std::string response = "{{\\"returnValue\\": \\"" + returnValue + "\\"}}";
+        request->send(200, "application/json", response.c_str());
+    }},
+    NULL,
+    AutomathausWebBindings::handleBody);\n\n"""
+        else:
+            # Generate the call and response
+            handler_code += f"""        auto returnValue = {class_name}::{method_name}({', '.join([f'v{i}' for i in range(1, len(names)+1)])});
 
         std::string response = "{{\\"returnValue\\": " + std::to_string(returnValue) + "}}";
         request->send(200, "application/json", response.c_str());
@@ -79,7 +88,7 @@ def generate_cpp_handler(return_type, method_name, params, class_name):
     return handler_code
 
 def generate_cpp_bindings(header_content, class_name):
-    methods = re.findall(r'static\s+([\w<>]+)\s+(\w+)\s*\((.*?)\)', header_content)
+    methods = re.findall(r'static\s+([\w<>]+(?:\s*::\s*\w+)?)\s+(\w+)\s*\((.*?)\)', header_content)
 
     cpp_bindings = ""
 
@@ -100,7 +109,7 @@ def generate_ts_bindings(header_content, class_name):
         # Add more mappings as needed
     }
 
-    methods = re.findall(r'static\s+([\w<>]+)\s+(\w+)\s*\((.*?)\)', header_content)
+    methods = re.findall(r'static\s+([\w<>]+(?:\s*::\s*\w+)?)\s+(\w+)\s*\((.*?)\)', header_content)
 
     ts_bindings = f"""export const {class_name.lower()} = {{
     """

@@ -17,6 +17,10 @@ class AutomathausWebBindTest : public AutomathausWebBindings {
     static int multiplyInt(int a, int b) {
         return a * b;
     };
+
+    static std::string getString() {
+        return "Hello from C++";
+    };
 };
 
 #endif  // AUTOMATHAUSWEBBINDTEST_H

@@ -57,6 +57,27 @@ export const automathauswebbindtest = {
 
         return null;
     },
+
+    getString: async(): Promise<string | null> => {
+        try {
+            let response = await fetch('/bindings/AutomathausWebBindTest/getString', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            });
+
+            if(response.ok){
+                let data = await response.json();
+                return data.returnValue;
+            }
+        } catch(e) {
+            console.error(e);
+        }
+
+        return null;
+    },
 };
 
 

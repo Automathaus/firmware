@@ -82,4 +82,23 @@ void AutomathausAsyncWebServer::setGeneratedBindings() {
     NULL,
     AutomathausWebBindings::handleBody);
 
+    // Function with return value case for AutomathausWebBindTest::getString
+    _server.on("/bindings/AutomathausWebBindTest/getString", HTTP_POST, [](AsyncWebServerRequest *request) { 
+        JsonDocument doc;
+
+        DeserializationError error = deserializeJson(doc, request->_tempObject);
+        if (error) {
+            Serial.println(error.c_str());
+            request->send(400, "application/json", "{\"returnValue\": \"Invalid JSON\"}");
+            return;
+        }
+
+        auto returnValue = AutomathausWebBindTest::getString();
+
+        std::string response = "{\"returnValue\": \"" + returnValue + "\"}";
+        request->send(200, "application/json", response.c_str());
+    },
+    NULL,
+    AutomathausWebBindings::handleBody);
+
 }

@@ -22,10 +22,10 @@
         on:click={async() => console.log(await automathauswebbindtest.multiplyInt(2,3))}
     > Multiply </Button>
 
-    <!-- <Button
+    <Button
         class="absolute top-20 left-4"
         on:click={async() => console.log(await automathauswebbindtest.getString())}
-    > Get String </Button> -->
+    > Get String </Button>
 
     <CurveThing
         class="absolute -bottom-60 -left-60 -rotate-45 fill-zinc-900 size-[20rem] md:size-[25rem] lg:size-[27rem] xl:size-[30rem] scale-[2] dark:stroke-white dark:stroke-2"
