@@ -31,6 +31,8 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     _server.onNotFound([](AsyncWebServerRequest *request){
         request->redirect("/");
     });
+
+    DefaultHeaders::Instance().addHeader("Automathaus-Node-ID", "1");
 }
 
 void AutomathausAsyncWebServer::begin(){
