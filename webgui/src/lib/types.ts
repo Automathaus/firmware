@@ -1,4 +1,7 @@
 export type WifiNetwork = {
-    ssid: string;
     signalStrength: number;
+    ssid: string;
+    bssid: string;
+    channel: number;
+    secure: string;
 }

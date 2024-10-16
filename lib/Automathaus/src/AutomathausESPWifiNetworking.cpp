@@ -63,7 +63,7 @@ std::string AutomathausESPWifiNetworking::scanWifiNetworks(){
                 signal_strength = 0;
             }
 
-            json += "\"signal_strength\":" + std::to_string(signal_strength);
+            json += "\"signalStrength\":" + std::to_string(signal_strength);
             json += ",\"ssid\":\"" + std::string(WiFi.SSID(i).c_str()) + "\"";
             json += ",\"bssid\":\"" + std::string(WiFi.BSSIDstr(i).c_str()) + "\"";
             json += ",\"channel\":" + std::to_string(WiFi.channel(i));

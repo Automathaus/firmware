@@ -82,5 +82,5 @@ export const AutomathausWebBindTest = {
 
 
 export const bindings = {
-    ...automathauswebbindtest,
+    ...AutomathausWebBindTest,
 };

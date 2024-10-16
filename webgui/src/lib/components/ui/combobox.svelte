@@ -7,6 +7,8 @@
     import { Button } from "$lib/components/ui/button/index.js";
     import { cn } from "$lib/utils.js";
 
+    import { onMount } from "svelte";
+
     import { WifiZero } from 'lucide-svelte';
     import { WifiLow } from 'lucide-svelte';
     import { WifiHigh } from 'lucide-svelte';
@@ -14,7 +16,8 @@
 
     import type { WifiNetwork } from "$lib/types";
 
-    export let items: WifiNetwork[] = [];
+    let items: WifiNetwork[] = [];
+    let loading = true;
 
     let open = false;
     let value = "";
@@ -27,6 +30,20 @@
             document.getElementById(triggerId)?.focus();
         });
     }
+
+    onMount(async () => {
+        try {
+            let response = await fetch('/wifiScan');
+            if(response.ok){
+                let data = await response.json();
+                console.log(data);
+                items = data;
+                loading = false;
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    });
 </script>
 
 <Popover.Root bind:open let:ids disableFocusTrap={true}>
@@ -50,7 +67,13 @@
     >
         <Command.Root>
             <Command.Input placeholder="Search wifi accesspoint.." class="h-9" />
-            <Command.Empty>No wifi network found</Command.Empty>
+            <Command.Empty>
+                {#if loading}
+                    Loading wifi networks...
+                {:else}
+                    No wifi network found
+                {/if}
+            </Command.Empty>
             <Command.Group>
                 {#each items as item}
                     <Command.Item
@@ -62,13 +85,13 @@
                     >
                     
                     {#if item.signalStrength === 0}
-                    <WifiZero class="mr-2 h-4 w-4"/>
+                        <WifiZero class="mr-2 h-4 w-4"/>
                     {:else if item.signalStrength === 1}
-                    <WifiLow class="mr-2 h-4 w-4"/>
+                        <WifiLow class="mr-2 h-4 w-4"/>
                     {:else if item.signalStrength === 2}
-                    <WifiHigh class="mr-2 h-4 w-4"/>
+                        <WifiHigh class="mr-2 h-4 w-4"/>
                     {:else}
-                    <Wifi class="mr-2 h-4 w-4"/>
+                        <Wifi class="mr-2 h-4 w-4"/>
                     {/if}
                     {item.ssid}
 

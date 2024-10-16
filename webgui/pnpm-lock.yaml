@@ -11,9 +11,6 @@ importers:
       '@fontsource/poppins':
         specifier: ^5.1.0
         version: 5.1.0
-      bits-ui:
-        specifier: ^0.21.15
-        version: 0.21.15(svelte@4.2.19)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -48,6 +45,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
+      bits-ui:
+        specifier: ^0.21.15
+        version: 0.21.15(svelte@4.2.19)
       svelte:
         specifier: ^4.2.19
         version: 4.2.19

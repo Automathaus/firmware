@@ -1,4 +1,8 @@
 <script lang="ts">
+    //svelte
+    import { onMount } from "svelte";
+
+    //lucide icons
     import { ArrowRight } from "lucide-svelte";
     import { Info } from 'lucide-svelte';
     import { ChartNetwork } from 'lucide-svelte';
@@ -8,6 +12,7 @@
     import { EyeOff } from 'lucide-svelte';
     import "@fontsource/poppins";
     
+    //components
     import { ModeWatcher } from "mode-watcher";
     import Navbar from "$lib/components/ui/navbar.svelte";
     import Button from "$lib/components/ui/button/button.svelte";
@@ -26,28 +31,13 @@
     import { Toggle } from "$lib/components/ui/toggle/index.js";
     import type { WifiNetwork } from "$lib/types";
 
-    const wifiNetworks: WifiNetwork[] = [
-        {
-            ssid: "Automathaus",
-            signalStrength: 3,
-        },
-        {
-            ssid: "Vodaphone",
-            signalStrength: 2,
-        },
-        {
-            ssid: "T-Mobile",
-            signalStrength: 1,
-        },
-    ];
-
     let showPassword = false;
 </script>
 
 <div class="flex flex-col space-y-4 z-10">
     <div class="flex flex-col align-middle items-center gap-4 rounded-lg border p-6 w-[23rem] backdrop-blur-md bg-white/80 dark:bg-zinc-950/50">
         <LogoAutomat class="size-12"/>
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center space-y-1">
             <h2 class="text-lg leading-none tracking-tight">Automathaus node setup</h2>
             <p class="text-muted-foreground text-sm">Node configuration</p>
         </div>
@@ -64,7 +54,7 @@
                 <div class="grid w-full items-center gap-6">
                     <div class="flex flex-col space-y-1.5">
                         <Label for="combo">Wifi network</Label>
-                        <Combobox items={wifiNetworks} id="combo"/>
+                        <Combobox id="combo"/>
                     </div>
                     <div class="flex flex-col space-y-1.5">
                         <Label for="password">Password</Label>
@@ -87,7 +77,7 @@
 
                     <div class="grid w-full items-center gap-3">
                         <Label for="mode" class="flex align-middle">
-                            Select node mode: 
+                            Select operational mode: 
                             <Popover.Root disableFocusTrap={true}>
                                 <Popover.Trigger>
                                     <Info class="ml-1 h-4 w-4"/>

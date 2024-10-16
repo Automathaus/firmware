@@ -47,15 +47,11 @@ class AutomathausWebServer {
     virtual void setWebInterface(const char *webPage) = 0;
     virtual void begin() = 0;
 
-    virtual void setResetMode() {
-        _mode = WEB_SERVER_RESET_MODE;
-    };
-
-    virtual void setNormalMode() {
+    void setNormalMode() {
         _mode = WEB_SERVER_NORMAL_MODE;
     };
 
-    virtual AutomathausWebServerMode getMode() {
+    AutomathausWebServerMode getMode() const {
         return _mode;
     };
 

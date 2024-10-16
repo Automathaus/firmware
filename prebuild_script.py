@@ -219,7 +219,7 @@ def generate_bindings():
             header_content = file.read()
         classes = extract_classes(header_content)
         for class_name in classes:
-            all_ts_bindings += f"    ...{class_name.lower()},\n"
+            all_ts_bindings += f"    ...{class_name},\n"
     all_ts_bindings += "};\n"
 
     with open(os.path.join(ts_binding_dir, 'automathaus.ts'), 'w') as file:

@@ -20,6 +20,10 @@ class AutomathausAsyncWebServer : public AutomathausWebServer {
     AutomathausAsyncWebServer(AsyncWebServer &server) : _server(server) {};
     ~AutomathausAsyncWebServer();
 
+    void setResetMode() {
+        _mode = WEB_SERVER_RESET_MODE;
+    };
+
     void setWebInterface(const char *webPage) override;
     void setGeneratedBindings() override;
     void begin() override;

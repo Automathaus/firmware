@@ -1,43 +1,73 @@
 <script lang="ts">
+    //svelte
+    import { onMount } from 'svelte';
+    import { tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
+    import { blur } from 'svelte/transition';
+
+    //style
     import "@fontsource/poppins";
-    import NodeResetForm from '$lib/pages/NodeResetForm.svelte';
     import { ModeWatcher } from "mode-watcher";
+
+    //routes
+    import NodeResetForm from '$lib/pages/NodeResetForm.svelte';
+
+    //components
     import Navbar from "$lib/components/ui/navbar.svelte";
     import CurveThing from "$lib/components/svg/CurveThing.svelte";
-
-    import { AutomathausWebBindTest } from "$lib/automathaus/automathaus";
     import Button from "$lib/components/ui/button/button.svelte";
+    import { Progress } from "$lib/components/ui/progress";
+    import CurveThingsScreen from "$lib/components/svg/CurveThingsScreen.svelte";
+    //automathaus
+    import { AutomathausWebBindTest } from "$lib/automathaus/automathaus";
+    import AnimAutomatLogo from '$lib/components/svg/animAutomatLogo.svelte';
 
+    async function getRoute(){
+        const response = await fetch('/getRoute');
+        const data = await response.json();
+        return data.route;
+    }
+
+    let route = "/";
+
+    const progress = tweened(0, { duration: 800, easing: cubicOut });
+
+    onMount(async () => {
+        // route = await getRoute();
+        progress.set(100);
+    });
 </script>
 
 <ModeWatcher />
-<div class="w-full min-h-svh flex items-center justify-center overflow-hidden relative">
-    <NodeResetForm />
+
+
+{#if $progress < 100}
+    <div class="w-full min-h-svh flex flex-col items-center justify-center bg-white dark:bg-zinc-950 z-20 fixed top-0 left-0" transition:blur={{ amount: 10 }}>
+        <div class="scale-75">
+            <AnimAutomatLogo />
+        </div>
+        <Progress class="w-24" value={$progress} max={100}/>
+    </div>
+{/if}
+
+
+<!-- TEST BUTTONS -->
+<div class="flex flex-col absolute top-4 left-4 space-y-4 z-50">
     <Button
-        class="absolute top-4 left-4"
         on:click={async() => console.log(await AutomathausWebBindTest.addInt(2,3))}
-    > Reset </Button>
+    > Add </Button>
     <Button
-        class="absolute top-12 left-4"
         on:click={async() => console.log(await AutomathausWebBindTest.multiplyInt(2,3))}
     > Multiply </Button>
 
     <Button
-        class="absolute top-20 left-4"
         on:click={async() => console.log(await AutomathausWebBindTest.getString())}
     > Get String </Button>
+</div>
 
-    <CurveThing
-        class="absolute -bottom-60 -left-60 -rotate-45 fill-zinc-900 size-[20rem] md:size-[25rem] lg:size-[27rem] xl:size-[30rem] scale-[2] dark:stroke-white dark:stroke-2"
-    />
-    <CurveThing
-        class="absolute -bottom-80 -left-80 -rotate-45 fill-zinc-950 size-[20rem] md:size-[25rem] lg:size-[27rem] xl:size-[30rem] scale-[2.2] dark:stroke-white dark:stroke-2"
-    />
 
-    <CurveThing
-        class="absolute -top-60 -right-60 rotate-[135deg] fill-zinc-900 size-[20rem] md:size-[25rem] lg:size-[27rem] xl:size-[30rem] scale-[2] dark:stroke-white dark:stroke-2"
-    />
-    <CurveThing
-        class="absolute -top-80 -right-80 rotate-[135deg] fill-zinc-950 size-[20rem] md:size-[25rem] lg:size-[27rem] xl:size-[30rem] scale-[2.2] dark:stroke-white dark:stroke-2"
-    />
+<div class="w-full min-h-svh flex items-center justify-center overflow-hidden relative">
+    <NodeResetForm />
+
+    <CurveThingsScreen />
 </div>
