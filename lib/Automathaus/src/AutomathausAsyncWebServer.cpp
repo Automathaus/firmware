@@ -76,8 +76,52 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     NULL,
     AutomathausWebBindings::handleBody);
 
+
+
+
+    _server.on("/sendEncryptedDataRAW", HTTP_POST, [this](AsyncWebServerRequest *request) {
+        if(request->contentLength() > MBEDTLS_MPI_MAX_SIZE){
+            request->send(400, "application/json", "{\"returnValue\": \"Too long for encryption\"}");
+            return;
+        }
+
+        //Base64 decode the encrypted data
+        unsigned char decoded[MBEDTLS_MPI_MAX_SIZE];
+        size_t decoded_len = 0;
+        mbedtls_base64_decode(decoded, MBEDTLS_MPI_MAX_SIZE, &decoded_len, (unsigned char*)request->_tempObject, request->contentLength());
+
+        Serial.print("Decoded message 64: ");
+        Serial.write(decoded, decoded_len);
+        Serial.println();
+
+        if(decoded_len > 256){
+            request->send(400, "application/json", "{\"returnValue\": \"Too long for encryption\"}");
+            return;
+        }
+
+        // Buffer to hold the decrypted data
+        unsigned char decrypted[MBEDTLS_MPI_MAX_SIZE];
+        size_t decrypted_len = 0;
+
+        if(this->_crypto.decrypt(decoded, decoded_len, decrypted, &decrypted_len, RSA_PRIVATE_KEY) == 0){
+            Serial.print("Decrypted message: ");
+            Serial.write(decrypted, decrypted_len);
+            Serial.println();
+        }
+
+        request->send(200, "application/json", (char*)decrypted);
+    },
+    NULL,
+    AutomathausWebBindings::handleBody);
+    
+
     DefaultHeaders::Instance().addHeader("Automathaus-Node-ID", "1");
 }
+
+
+
+
+
 
 void AutomathausAsyncWebServer::begin(){
     (void)AutomathausESPWifiNetworking::scanWifiNetworks();

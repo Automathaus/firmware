@@ -22,7 +22,7 @@
     //automathaus
     import { AutomathausWebBindTest } from "$lib/automathaus/automathaus";
     import AnimAutomatLogo from '$lib/components/svg/animAutomatLogo.svelte';
-    import { getPublicKey, encryptData, sendEncryptedData } from '$lib/automathaus/automathausCrypto';
+    import { getPublicKey, encryptData, sendEncryptedData, sendEncryptedDataRAW } from '$lib/automathaus/automathausCrypto';
 
     async function getRoute(): Promise<string>{
         try {
@@ -49,11 +49,19 @@
 
     async function testEncrypt(){
         let publicKey = await getPublicKey();
-        let encryptedData = await encryptData("Hello World", publicKey);
-        // let encryptedData = "Vb8LVKhxHzqHjs9nSyigvYtyv6nT95f7gFR7mnIYeVupfXtQlpBessUuBq07Ndl9QSvOVGZhF1U6uJQQRpN/9FKSJ/KRHPO+utvp/h8AnQfVhQFwYEfMzzi+F/ZUoLoG/aORENwS1Q79K6wRYLrlrPuhL+0+5ABRTnAqushDpPfrgbmdI1v0VV6rOarwC04mK8Zpo//ly5G2iecUTKKFikt4nwZLFeUWEpZlYuWNjSBBLC9vyrH1Iz84wCj5oucOT3BHIovlALVE4jpvd2Mqi6lnzLTRMyO7fSw72EQWVcGLLKBLQa83QTYDeQ4PrdKpcx8weFhgNfFsr6l5kJu9WA==";
+        let encryptedData = await encryptData(JSON.stringify({ value: "Hello World" }), publicKey);
         console.log(encryptedData);
         if(encryptedData){
             console.log(await sendEncryptedData(encryptedData));
+        }
+    }
+
+    async function testRawEncrypt(){
+        let publicKey = await getPublicKey();
+        let encryptedData = await encryptData(JSON.stringify({ value: "Hello World" }), publicKey);
+        console.log(encryptedData);
+        if(encryptedData){
+            console.log("data from server: " + await sendEncryptedDataRAW(encryptedData));
         }
     }
 </script>
@@ -87,6 +95,10 @@
     <Button
         on:click={async() => testEncrypt()}
     > Test Encrypt </Button>
+
+    <Button
+        on:click={async() => testRawEncrypt()}
+    > Test Raw Encrypt </Button>
 
     <Button
         on:click={async() => console.log(await getRoute())}

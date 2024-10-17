@@ -30,5 +30,18 @@ export async function sendEncryptedData(encryptedData: string): Promise<string> 
         body: JSON.stringify({ data: encryptedData }),
     });
     const responseData = await response.json();
-    return responseData.data;
+    console.log(responseData);
+    return responseData.returnValue;
+}
+
+export async function sendEncryptedDataRAW(encryptedData: string): Promise<string> {
+    const response = await fetch('/sendEncryptedDataRAW', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: encryptedData,
+    });
+    const responseData = await response.text();
+    return responseData;
 }
