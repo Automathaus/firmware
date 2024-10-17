@@ -27,6 +27,7 @@
     "@fontsource/poppins": "^5.1.0",
     "clsx": "^2.1.1",
     "cmdk-sv": "^0.0.18",
+    "jsencrypt": "^3.3.2",
     "lucide-svelte": "^0.447.0",
     "mode-watcher": "^0.4.1",
     "svelte-radix": "^1.1.1",

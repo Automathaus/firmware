@@ -18,14 +18,24 @@
     import Button from "$lib/components/ui/button/button.svelte";
     import { Progress } from "$lib/components/ui/progress";
     import CurveThingsScreen from "$lib/components/svg/CurveThingsScreen.svelte";
+
     //automathaus
     import { AutomathausWebBindTest } from "$lib/automathaus/automathaus";
     import AnimAutomatLogo from '$lib/components/svg/animAutomatLogo.svelte';
+    import { getPublicKey, encryptData, sendEncryptedData } from '$lib/automathaus/automathausCrypto';
 
-    async function getRoute(){
-        const response = await fetch('/getRoute');
-        const data = await response.json();
-        return data.route;
+    async function getRoute(): Promise<string>{
+        try {
+            let response = await fetch('/getRoute');
+            if(response.ok){
+                let data = await response.json();
+                return data.route;
+            }
+        } catch(e) {
+            console.error(e);
+        }
+
+        return "/";
     }
 
     let route = "/";
@@ -33,9 +43,19 @@
     const progress = tweened(0, { duration: 800, easing: cubicOut });
 
     onMount(async () => {
-        // route = await getRoute();
+        route = await getRoute();
         progress.set(100);
     });
+
+    async function testEncrypt(){
+        let publicKey = await getPublicKey();
+        let encryptedData = await encryptData("Hello World", publicKey);
+        // let encryptedData = "Vb8LVKhxHzqHjs9nSyigvYtyv6nT95f7gFR7mnIYeVupfXtQlpBessUuBq07Ndl9QSvOVGZhF1U6uJQQRpN/9FKSJ/KRHPO+utvp/h8AnQfVhQFwYEfMzzi+F/ZUoLoG/aORENwS1Q79K6wRYLrlrPuhL+0+5ABRTnAqushDpPfrgbmdI1v0VV6rOarwC04mK8Zpo//ly5G2iecUTKKFikt4nwZLFeUWEpZlYuWNjSBBLC9vyrH1Iz84wCj5oucOT3BHIovlALVE4jpvd2Mqi6lnzLTRMyO7fSw72EQWVcGLLKBLQa83QTYDeQ4PrdKpcx8weFhgNfFsr6l5kJu9WA==";
+        console.log(encryptedData);
+        if(encryptedData){
+            console.log(await sendEncryptedData(encryptedData));
+        }
+    }
 </script>
 
 <ModeWatcher />
@@ -63,6 +83,18 @@
     <Button
         on:click={async() => console.log(await AutomathausWebBindTest.getString())}
     > Get String </Button>
+
+    <Button
+        on:click={async() => testEncrypt()}
+    > Test Encrypt </Button>
+
+    <Button
+        on:click={async() => console.log(await getRoute())}
+    > Get Route </Button>
+
+    <Button
+        on:click={async() => console.log(await getPublicKey())}
+    > Get Public Key </Button>
 </div>
 
 

@@ -10,6 +10,7 @@
 #include <ESPAsyncTCP.h>
 #endif
 #include "AutomathausNetworking.h"
+#include "AutomathausCryptoRSAMbed.h"
 
 class AutomathausESPWifiNetworking : public AutomathausNetworking {
     private:

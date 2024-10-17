@@ -4,7 +4,8 @@
 #define WIFI_PASSWORD "AutomatPass2023"
 
 AsyncWebServer server(80);
-AutomathausAsyncWebServer automathausWebServer(server);
+AutomathausCryptoRSAMbed automathausCrypto;
+AutomathausAsyncWebServer automathausWebServer(server, automathausCrypto);
 AutomathausESPWifiNetworking automathausWifiNetworking(WIFI_SSID, WIFI_PASSWORD);
 Automathaus automathaus(automathausWifiNetworking, automathausWebServer);
 

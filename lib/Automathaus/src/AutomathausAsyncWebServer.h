@@ -10,14 +10,17 @@
 #endif
 #include <ESPAsyncWebServer.h>
 #include "AutomathausWebServer.h"
+#include "AutomathausCrypto.h"
+
 
 // Implementazione dell'interfaccia AutomathausWebServer
 class AutomathausAsyncWebServer : public AutomathausWebServer {
    private:
     AsyncWebServer &_server;
+    AutomathausCrypto &_crypto;
 
    public:
-    AutomathausAsyncWebServer(AsyncWebServer &server) : _server(server) {};
+    AutomathausAsyncWebServer(AsyncWebServer &server, AutomathausCrypto &crypto) : _server(server), _crypto(crypto) {};
     ~AutomathausAsyncWebServer();
 
     void setResetMode() {

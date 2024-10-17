@@ -1,6 +1,7 @@
 #include "AutomathausAsyncWebServer.h"
 #include "AutomathausESPWifiNetworking.h"
-
+#include <ArduinoJson.h>
+#include <mbedtls/base64.h>
 AutomathausAsyncWebServer::~AutomathausAsyncWebServer() {
     // Implementazione del distruttore, se necessario
 }
@@ -31,6 +32,49 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     _server.onNotFound([](AsyncWebServerRequest *request){
         request->redirect("/");
     });
+
+    _server.on("/getPublicKey", HTTP_GET, [this](AsyncWebServerRequest *request){
+        request->send_P(200, "text/plain", RSA_PUBLIC_KEY);
+    });
+
+    // Function with return value case for AutomathausWebBindTest::getString
+    _server.on("/sendEncryptedData", HTTP_POST, [this](AsyncWebServerRequest *request) { 
+        JsonDocument doc;
+
+        DeserializationError error = deserializeJson(doc, request->_tempObject);
+        if (error) {
+            Serial.println(error.c_str());
+            request->send(400, "application/json", "{\"returnValue\": \"Invalid JSON\"}");
+            return;
+        }
+        const char* encryptedData = doc["data"];
+        Serial.println(encryptedData);
+
+        //Base64 decode the encrypted data
+        unsigned char decoded[MBEDTLS_MPI_MAX_SIZE];
+        size_t decoded_len = 0;
+        mbedtls_base64_decode(decoded, MBEDTLS_MPI_MAX_SIZE, &decoded_len, (unsigned char*)encryptedData, strlen(encryptedData));
+
+        Serial.print("Decoded message 64: ");
+        Serial.write(decoded, decoded_len);
+        Serial.println();
+
+        // Buffer to hold the decrypted data
+        unsigned char decrypted[MBEDTLS_MPI_MAX_SIZE];
+        size_t decrypted_len = 0;
+
+
+        if(this->_crypto.decrypt(decoded, decoded_len, decrypted, &decrypted_len, RSA_PRIVATE_KEY) == 0){
+            Serial.print("Decrypted message: ");
+            Serial.write(decrypted, decrypted_len);
+            Serial.println();
+        }
+
+        std::string response = "{\"returnValue\": \"" + std::string((char*)decrypted) + "\"}";
+        request->send(200, "application/json", response.c_str());
+    },
+    NULL,
+    AutomathausWebBindings::handleBody);
 
     DefaultHeaders::Instance().addHeader("Automathaus-Node-ID", "1");
 }
