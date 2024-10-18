@@ -80,16 +80,8 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
 
 
     _server.on("/sendEncryptedDataRAW", HTTP_POST, [this](AsyncWebServerRequest *request) {
-        size_t decrypted_len = decryptEncryptedBody(request);
-        if(decrypted_len == -1){
-            return;
-        }
-
-        char decrypted[decrypted_len];
-        strncpy(decrypted, (char*)request->_tempObject, decrypted_len);
-        
-
-        request->send(200, "application/json", decrypted);
+        (void)decryptEncryptedBody(request);
+        request->send(200, "application/json", (char*)request->_tempObject);
     },
     NULL,
     handleBody);
@@ -139,10 +131,11 @@ size_t AutomathausAsyncWebServer::decryptEncryptedBody(AsyncWebServerRequest *re
     if(_crypto.decrypt(decoded, decoded_len, decrypted, &decrypted_len, RSA_PRIVATE_KEY) == 0){
         Serial.print("Decrypted message: ");
         Serial.write(decrypted, decrypted_len);
-        Serial.print("Length: ");
-        Serial.println(decrypted_len);
+        Serial.println("Length: ");
+        Serial.print(decrypted_len);
         Serial.println();
     }else{
+        request->send(400, "application/json", "{\"returnValue\": \"Decryption failed\"}");
         return -1;
     }
 
