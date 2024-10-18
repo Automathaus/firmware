@@ -8,6 +8,7 @@
 #include "mbedtls/ctr_drbg.h"
 #include "mbedtls/sha256.h"
 #include "mbedtls/error.h"
+#include "mbedtls/base64.h"
 #include "AutomathausCrypto.h"
 
 #include "generated/RSAkeys.h"
@@ -26,5 +27,7 @@ class AutomathausCryptoRSAMbed : public AutomathausCrypto {
 
         int encrypt(const char *input, size_t input_len, unsigned char *output, size_t *output_len, const char *key) override final;
         int decrypt(const unsigned char *input, size_t input_len, unsigned char *output, size_t *output_len, const char *key) override final;
+
+        size_t decryptFromB64Encoded(unsigned char *buffer, size_t buffer_len) override final;
 };
 #endif

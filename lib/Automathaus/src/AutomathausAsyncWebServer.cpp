@@ -38,7 +38,7 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     });
 
     // Function with return value case for AutomathausWebBindTest::getString
-    _server.on("/sendEncryptedData", HTTP_POST, [this](AsyncWebServerRequest *request) { 
+    _server.on("/sendEncryptedData", HTTP_POST, [this](AsyncWebServerRequest *request) {
         JsonDocument doc;
 
         DeserializationError error = deserializeJson(doc, request->_tempObject);
@@ -47,40 +47,22 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
             request->send(400, "application/json", "{\"returnValue\": \"Invalid JSON\"}");
             return;
         }
+
         const char* encryptedData = doc["data"];
-        Serial.println(encryptedData);
+        char decryptedData[strlen(encryptedData) + 1];
+        strncpy(decryptedData, encryptedData, strlen(encryptedData) + 1);
+        size_t decrypted_len = this->_crypto.decryptFromB64Encoded((unsigned char*)decryptedData, strlen(decryptedData));
 
-        //Base64 decode the encrypted data
-        unsigned char decoded[MBEDTLS_MPI_MAX_SIZE];
-        size_t decoded_len = 0;
-        mbedtls_base64_decode(decoded, MBEDTLS_MPI_MAX_SIZE, &decoded_len, (unsigned char*)encryptedData, strlen(encryptedData));
-
-        Serial.print("Decoded message 64: ");
-        Serial.write(decoded, decoded_len);
-        Serial.println();
-
-        // Buffer to hold the decrypted data
-        unsigned char decrypted[MBEDTLS_MPI_MAX_SIZE];
-        size_t decrypted_len = 0;
-
-
-        if(this->_crypto.decrypt(decoded, decoded_len, decrypted, &decrypted_len, RSA_PRIVATE_KEY) == 0){
-            Serial.print("Decrypted message: ");
-            Serial.write(decrypted, decrypted_len);
-            Serial.println();
-        }
-
-        std::string response = "{\"returnValue\": \"" + std::string((char*)decrypted) + "\"}";
-        request->send(200, "application/json", response.c_str());
+        request->send(200, "application/json", decryptedData);
     },
     NULL,
     handleBody);
 
 
 
-
     _server.on("/sendEncryptedDataRAW", HTTP_POST, [this](AsyncWebServerRequest *request) {
-        (void)decryptEncryptedBody(request);
+        // (void)decryptEncryptedBody(request);
+        (void)this->_crypto.decryptFromB64Encoded((unsigned char*)request->_tempObject, request->contentLength());
         request->send(200, "application/json", (char*)request->_tempObject);
     },
     NULL,

@@ -10,6 +10,8 @@ class AutomathausCrypto {
                         unsigned char *output, size_t *output_len, const char *key) = 0;
     virtual int decrypt(const unsigned char *input, size_t input_len,
                         unsigned char *output, size_t *output_len, const char *key) = 0;
+
+    virtual size_t decryptFromB64Encoded(unsigned char *buffer, size_t buffer_len) = 0;
 };
 
 #endif

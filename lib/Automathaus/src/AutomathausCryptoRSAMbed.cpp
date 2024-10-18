@@ -56,6 +56,47 @@ int AutomathausCryptoRSAMbed::decrypt(const unsigned char *input, size_t input_l
 }
 
 
+size_t AutomathausCryptoRSAMbed::decryptFromB64Encoded(unsigned char *buffer, size_t buffer_len) {
+    if(buffer_len > MBEDTLS_MPI_MAX_SIZE){
+        return -1;
+    }
+
+    //Base64 decode the encrypted data
+    unsigned char decoded[MBEDTLS_MPI_MAX_SIZE];
+    size_t decoded_len = 0;
+    mbedtls_base64_decode(decoded, MBEDTLS_MPI_MAX_SIZE, &decoded_len, (unsigned char*)buffer, buffer_len);
+
+    Serial.print("Decoded message 64: ");
+    Serial.write(decoded, decoded_len);
+    Serial.println();
+
+    if(decoded_len > 256){
+        return -1;
+    }
+
+    // Buffer to hold the decrypted data
+    unsigned char decrypted[MBEDTLS_MPI_MAX_SIZE];
+    size_t decrypted_len = 0;
+
+    if(decrypt(decoded, decoded_len, decrypted, &decrypted_len, RSA_PRIVATE_KEY) == 0){
+        Serial.print("Decrypted message: ");
+        Serial.write(decrypted, decrypted_len);
+        Serial.println("Length: ");
+        Serial.print(decrypted_len);
+        Serial.println();
+    }else{
+        return -1;
+    }
+
+    //erase temp object with memset
+    memset(buffer, 0, buffer_len);
+    //write the decrypted data to the temp object
+    memcpy(buffer, decrypted, decrypted_len);
+    return decrypted_len + 1;
+}
+
+
+
 AutomathausCryptoRSAMbed::~AutomathausCryptoRSAMbed() {
     mbedtls_pk_free(&_pk);
     mbedtls_entropy_free(&_entropy);

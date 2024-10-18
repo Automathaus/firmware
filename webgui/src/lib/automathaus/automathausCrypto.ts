@@ -31,7 +31,7 @@ export async function sendEncryptedData(encryptedData: string): Promise<string> 
     });
     const responseData = await response.json();
     console.log(responseData);
-    return responseData.returnValue;
+    return responseData.value;
 }
 
 export async function sendEncryptedDataRAW(encryptedData: string): Promise<string> {
