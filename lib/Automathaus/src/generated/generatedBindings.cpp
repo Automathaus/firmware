@@ -10,7 +10,7 @@ void AutomathausAsyncWebServer::setGeneratedBindings() {
         request->send(200, "text/plain", "{\"returnValue\": null}");
     },
     NULL,
-    AutomathausWebBindings::handleBody);
+    handleBody);
 
     // Function with return value case for AutomathausWebBindTest::addInt
     _server.on("/bindings/AutomathausWebBindTest/addInt", HTTP_POST, [](AsyncWebServerRequest *request) { 
@@ -45,7 +45,7 @@ void AutomathausAsyncWebServer::setGeneratedBindings() {
         request->send(200, "application/json", response.c_str());
     },
     NULL,
-    AutomathausWebBindings::handleBody);
+    handleBody);
 
     // Function with return value case for AutomathausWebBindTest::multiplyInt
     _server.on("/bindings/AutomathausWebBindTest/multiplyInt", HTTP_POST, [](AsyncWebServerRequest *request) { 
@@ -80,7 +80,7 @@ void AutomathausAsyncWebServer::setGeneratedBindings() {
         request->send(200, "application/json", response.c_str());
     },
     NULL,
-    AutomathausWebBindings::handleBody);
+    handleBody);
 
     // Function with return value case for AutomathausWebBindTest::getString
     _server.on("/bindings/AutomathausWebBindTest/getString", HTTP_POST, [](AsyncWebServerRequest *request) { 
@@ -99,6 +99,6 @@ void AutomathausAsyncWebServer::setGeneratedBindings() {
         request->send(200, "application/json", response.c_str());
     },
     NULL,
-    AutomathausWebBindings::handleBody);
+    handleBody);
 
 }

@@ -16,6 +16,7 @@
 // Implementazione dell'interfaccia AutomathausWebServer
 class AutomathausAsyncWebServer : public AutomathausWebServer {
    private:
+    constexpr static const size_t _maxContentLength = 16384;
     AsyncWebServer &_server;
     AutomathausCrypto &_crypto;
 
@@ -29,6 +30,9 @@ class AutomathausAsyncWebServer : public AutomathausWebServer {
 
     void setWebInterface(const char *webPage) override;
     void setGeneratedBindings() override;
+
+    static void handleBody(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total);
+    size_t decryptEncryptedBody(AsyncWebServerRequest *request);
     void begin() override;
 };
 

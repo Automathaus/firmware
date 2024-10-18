@@ -74,53 +74,84 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
         request->send(200, "application/json", response.c_str());
     },
     NULL,
-    AutomathausWebBindings::handleBody);
+    handleBody);
 
 
 
 
     _server.on("/sendEncryptedDataRAW", HTTP_POST, [this](AsyncWebServerRequest *request) {
-        if(request->contentLength() > MBEDTLS_MPI_MAX_SIZE){
-            request->send(400, "application/json", "{\"returnValue\": \"Too long for encryption\"}");
+        size_t decrypted_len = decryptEncryptedBody(request);
+        if(decrypted_len == -1){
             return;
         }
 
-        //Base64 decode the encrypted data
-        unsigned char decoded[MBEDTLS_MPI_MAX_SIZE];
-        size_t decoded_len = 0;
-        mbedtls_base64_decode(decoded, MBEDTLS_MPI_MAX_SIZE, &decoded_len, (unsigned char*)request->_tempObject, request->contentLength());
+        char decrypted[decrypted_len];
+        strncpy(decrypted, (char*)request->_tempObject, decrypted_len);
+        
 
-        Serial.print("Decoded message 64: ");
-        Serial.write(decoded, decoded_len);
-        Serial.println();
-
-        if(decoded_len > 256){
-            request->send(400, "application/json", "{\"returnValue\": \"Too long for encryption\"}");
-            return;
-        }
-
-        // Buffer to hold the decrypted data
-        unsigned char decrypted[MBEDTLS_MPI_MAX_SIZE];
-        size_t decrypted_len = 0;
-
-        if(this->_crypto.decrypt(decoded, decoded_len, decrypted, &decrypted_len, RSA_PRIVATE_KEY) == 0){
-            Serial.print("Decrypted message: ");
-            Serial.write(decrypted, decrypted_len);
-            Serial.println();
-        }
-
-        request->send(200, "application/json", (char*)decrypted);
+        request->send(200, "application/json", decrypted);
     },
     NULL,
-    AutomathausWebBindings::handleBody);
-    
+    handleBody);
+
 
     DefaultHeaders::Instance().addHeader("Automathaus-Node-ID", "1");
 }
 
 
 
+void AutomathausAsyncWebServer::handleBody(AsyncWebServerRequest *request, uint8_t *data,size_t len, size_t index, size_t total) {
+    if (total > 0 && request->_tempObject == NULL &&
+        total < _maxContentLength) {
+        request->_tempObject = malloc(total);
+    }
+    if (request->_tempObject != NULL) {
+        memcpy((uint8_t *)(request->_tempObject) + index, data, len);
+    }
+}
 
+
+
+size_t AutomathausAsyncWebServer::decryptEncryptedBody(AsyncWebServerRequest *request) {
+    if(request->contentLength() > MBEDTLS_MPI_MAX_SIZE){
+        request->send(400, "application/json", "{\"returnValue\": \"Too long for encryption\"}");
+        return -1;
+    }
+
+    //Base64 decode the encrypted data
+    unsigned char decoded[MBEDTLS_MPI_MAX_SIZE];
+    size_t decoded_len = 0;
+    mbedtls_base64_decode(decoded, MBEDTLS_MPI_MAX_SIZE, &decoded_len, (unsigned char*)request->_tempObject, request->contentLength());
+
+    Serial.print("Decoded message 64: ");
+    Serial.write(decoded, decoded_len);
+    Serial.println();
+
+    if(decoded_len > 256){
+        request->send(400, "application/json", "{\"returnValue\": \"Too long for encryption\"}");
+        return -1;
+    }
+
+    // Buffer to hold the decrypted data
+    unsigned char decrypted[MBEDTLS_MPI_MAX_SIZE];
+    size_t decrypted_len = 0;
+
+    if(_crypto.decrypt(decoded, decoded_len, decrypted, &decrypted_len, RSA_PRIVATE_KEY) == 0){
+        Serial.print("Decrypted message: ");
+        Serial.write(decrypted, decrypted_len);
+        Serial.print("Length: ");
+        Serial.println(decrypted_len);
+        Serial.println();
+    }else{
+        return -1;
+    }
+
+    //erase temp object with memset
+    memset(request->_tempObject, 0, request->contentLength());
+    //write the decrypted data to the temp object
+    memcpy(request->_tempObject, decrypted, decrypted_len);
+    return decrypted_len + 1;
+}
 
 
 void AutomathausAsyncWebServer::begin(){

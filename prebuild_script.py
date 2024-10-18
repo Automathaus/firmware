@@ -36,7 +36,7 @@ def generate_cpp_handler(return_type, method_name, params, class_name):
         request->send(200, "text/plain", "{{\\"returnValue\\": null}}");
     }},
     NULL,
-    AutomathausWebBindings::handleBody);\n\n"""
+    handleBody);\n\n"""
     else:
         # Handle functions with return values
         handler_code += f"""    // Function with return value case for {class_name}::{method_name}
@@ -74,7 +74,7 @@ def generate_cpp_handler(return_type, method_name, params, class_name):
         request->send(200, "application/json", response.c_str());
     }},
     NULL,
-    AutomathausWebBindings::handleBody);\n\n"""
+    handleBody);\n\n"""
         else:
             # Generate the call and response
             handler_code += f"""        auto returnValue = {class_name}::{method_name}({', '.join([f'v{i}' for i in range(1, len(names)+1)])});
@@ -83,7 +83,7 @@ def generate_cpp_handler(return_type, method_name, params, class_name):
         request->send(200, "application/json", response.c_str());
     }},
     NULL,
-    AutomathausWebBindings::handleBody);\n\n"""
+    handleBody);\n\n"""
 
     return handler_code
 

@@ -16,15 +16,6 @@ class AutomathausWebBindings {
 
    public:
     virtual ~AutomathausWebBindings() {}
-    static void handleBody(AsyncWebServerRequest *request, uint8_t *data,size_t len, size_t index, size_t total) {
-        if (total > 0 && request->_tempObject == NULL &&
-            total < _maxContentLength) {
-            request->_tempObject = malloc(total);
-        }
-        if (request->_tempObject != NULL) {
-            memcpy((uint8_t *)(request->_tempObject) + index, data, len);
-        }
-    }
 };
 
 class AutomathausWebServer {
