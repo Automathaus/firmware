@@ -24,6 +24,7 @@ public:
     ~Automathaus();
 
     void start(int serialBaudrate = 115200);
+    void housekeeping();
     AutomathausState getState();
 };
 

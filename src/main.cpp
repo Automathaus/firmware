@@ -1,7 +1,7 @@
 #include "Automathaus.h"
 
-#define WIFI_SSID "Automathaus"
-#define WIFI_PASSWORD "AutomatPass2023"
+#define WIFI_SSID "AutomathausDev"
+#define WIFI_PASSWORD "AutomatPass1234"
 
 AsyncWebServer server(80);
 AutomathausCryptoRSAMbed automathausCrypto;
@@ -12,10 +12,12 @@ Automathaus automathaus(automathausWifiNetworking, automathausWebServer);
 void setup() {
     automathaus.start();
 
-    Serial.println("IP Address:");
-    Serial.println(automathausWifiNetworking.getIPAddress());
-    Serial.println("MAC Address:");
-    Serial.println(automathausWifiNetworking.getMACAddress());
+    // Serial.println("IP Address:");
+    // Serial.println(automathausWifiNetworking.getIPAddress());
+    // Serial.println("MAC Address:");
+    // Serial.println(automathausWifiNetworking.getMACAddress());
 }
 
-void loop() {}
+void loop() {
+    automathaus.housekeeping();
+}

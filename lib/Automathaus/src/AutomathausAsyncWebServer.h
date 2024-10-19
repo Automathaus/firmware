@@ -24,10 +24,6 @@ class AutomathausAsyncWebServer : public AutomathausWebServer {
     AutomathausAsyncWebServer(AsyncWebServer &server, AutomathausCrypto &crypto) : _server(server), _crypto(crypto) {};
     ~AutomathausAsyncWebServer();
 
-    void setResetMode() {
-        _mode = WEB_SERVER_RESET_MODE;
-    };
-
     void setWebInterface(const char *webPage) override;
     void setGeneratedBindings() override;
 

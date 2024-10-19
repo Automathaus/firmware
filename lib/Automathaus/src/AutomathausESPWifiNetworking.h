@@ -14,6 +14,9 @@
 
 class AutomathausESPWifiNetworking : public AutomathausNetworking {
     private:
+        DNSServer _dnsServer;
+        unsigned long _previousMillis = 0;
+        
         char _ssid[33];
         char _password[65];
 
@@ -22,12 +25,15 @@ class AutomathausESPWifiNetworking : public AutomathausNetworking {
         ~AutomathausESPWifiNetworking();
         
         void setCredentials(const char* ssid, const char* password);
-        void connectToNetwork() override;
         char* getIPAddress() override;
         char* getMACAddress() override;
+        ConnectionStatus connectToNetwork() override;
+        void disconnectFromNetwork() override;
         ConnectionStatus getConnectionStatus() override;
         
         static std::string scanWifiNetworks();
+        void startSetupMode() override;
+        void housekeeping() override;
 };
 
 #endif  // AUTOMATHAUSESPWIFINETWORKING_H

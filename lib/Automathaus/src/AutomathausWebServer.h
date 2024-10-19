@@ -6,7 +6,7 @@
 
 namespace Routes {
     constexpr char ROOT[] = "/";
-    constexpr char RESET[] = "/reset";
+    constexpr char SETUP[] = "/setup";
     constexpr char NOT_FOUND[] = "/404";
 }
 
@@ -38,8 +38,8 @@ class AutomathausWebServer {
     virtual void setWebInterface(const char *webPage) = 0;
     virtual void begin() = 0;
 
-    void setNormalMode() {
-        _mode = WEB_SERVER_NORMAL_MODE;
+    void setMode(AutomathausWebServerMode mode) {
+        _mode = mode;
     };
 
     AutomathausWebServerMode getMode() const {

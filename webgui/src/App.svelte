@@ -22,7 +22,7 @@
     //automathaus
     import { AutomathausWebBindTest } from "$lib/automathaus/automathaus";
     import AnimAutomatLogo from '$lib/components/svg/animAutomatLogo.svelte';
-    import { getPublicKey, encryptData, sendEncryptedData, sendEncryptedDataRAW } from '$lib/automathaus/automathausCrypto';
+    import { getPublicKey, encryptData } from '$lib/automathaus/automathausCrypto';
 
     async function getRoute(): Promise<string>{
         try {
@@ -43,27 +43,28 @@
     const progress = tweened(0, { duration: 800, easing: cubicOut });
 
     onMount(async () => {
+        progress.set(30);
         route = await getRoute();
         progress.set(100);
     });
 
-    async function testEncrypt(){
-        let publicKey = await getPublicKey();
-        let encryptedData = await encryptData(JSON.stringify({ value: "Hello World" }), publicKey);
-        console.log(encryptedData);
-        if(encryptedData){
-            console.log(await sendEncryptedData(encryptedData));
-        }
-    }
+    // async function testEncrypt(){
+    //     let publicKey = await getPublicKey();
+    //     let encryptedData = await encryptData(JSON.stringify({ value: "Hello World" }), publicKey);
+    //     console.log(encryptedData);
+    //     if(encryptedData){
+    //         console.log(await sendEncryptedData(encryptedData));
+    //     }
+    // }
 
-    async function testRawEncrypt(){
-        let publicKey = await getPublicKey();
-        let encryptedData = await encryptData(JSON.stringify({ value: "Hello World" }), publicKey);
-        console.log(encryptedData);
-        if(encryptedData){
-            console.log("data from server: " + await sendEncryptedDataRAW(encryptedData));
-        }
-    }
+    // async function testRawEncrypt(){
+    //     let publicKey = await getPublicKey();
+    //     let encryptedData = await encryptData(JSON.stringify({ value: "Hello World" }), publicKey);
+    //     console.log(encryptedData);
+    //     if(encryptedData){
+    //         console.log("data from server: " + await sendEncryptedDataRAW(encryptedData));
+    //     }
+    // }
 </script>
 
 <ModeWatcher />
@@ -92,17 +93,18 @@
         on:click={async() => console.log(await AutomathausWebBindTest.getString())}
     > Get String </Button>
 
+    
     <Button
+    on:click={async() => console.log(await getRoute())}
+    > Get Route </Button>
+    
+    <!-- <Button
         on:click={async() => testEncrypt()}
     > Test Encrypt </Button>
 
     <Button
         on:click={async() => testRawEncrypt()}
-    > Test Raw Encrypt </Button>
-
-    <Button
-        on:click={async() => console.log(await getRoute())}
-    > Get Route </Button>
+    > Test Raw Encrypt </Button> -->
 
     <Button
         on:click={async() => console.log(await getPublicKey())}
@@ -111,7 +113,15 @@
 
 
 <div class="w-full min-h-svh flex items-center justify-center overflow-hidden relative">
-    <NodeResetForm />
+
+    <!-- NORMAL MODE -->
+    {#if route === "/"}
+        <div>
+            <h1>Automathaus</h1>
+        </div>
+    {:else if route === "/setup"}
+        <NodeResetForm />
+    {/if}
 
     <CurveThingsScreen />
 </div>

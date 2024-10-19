@@ -11,7 +11,7 @@ typedef enum {
 } AutomathausState;
 
 typedef enum {
-    WEB_SERVER_RESET_MODE,
+    WEB_SERVER_SETUP_MODE,
     WEB_SERVER_NORMAL_MODE
 } AutomathausWebServerMode;
 

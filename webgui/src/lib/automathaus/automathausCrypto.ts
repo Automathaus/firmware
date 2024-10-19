@@ -21,27 +21,27 @@ export async function decryptData(data: string, privateKey: string): Promise<str
     return decryptedData;
 }
 
-export async function sendEncryptedData(encryptedData: string): Promise<string> {
-    const response = await fetch('/sendEncryptedData', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: encryptedData }),
-    });
-    const responseData = await response.json();
-    console.log(responseData);
-    return responseData.value;
-}
+// export async function sendEncryptedData(encryptedData: string): Promise<string> {
+//     const response = await fetch('/sendEncryptedDataInJSON', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ data: encryptedData }),
+//     });
+//     const responseData = await response.json();
+//     console.log(responseData);
+//     return responseData.value;
+// }
 
-export async function sendEncryptedDataRAW(encryptedData: string): Promise<string> {
-    const response = await fetch('/sendEncryptedDataRAW', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: encryptedData,
-    });
-    const responseData = await response.text();
-    return responseData;
-}
+// export async function sendEncryptedDataRAW(encryptedData: string): Promise<string> {
+//     const response = await fetch('/sendEncryptedBody', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: encryptedData,
+//     });
+//     const responseData = await response.text();
+//     return responseData;
+// }

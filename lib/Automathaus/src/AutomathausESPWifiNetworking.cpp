@@ -19,24 +19,33 @@ void AutomathausESPWifiNetworking::setCredentials(const char* ssid, const char* 
 
     strncpy(_ssid, ssid, 32);
     strncpy(_password, password, 64);
+    _ssid[32] = '\0';
+    _password[64] = '\0';
 }
 
 // Connect to the WiFi network
-void AutomathausESPWifiNetworking::connectToNetwork() {
+ConnectionStatus AutomathausESPWifiNetworking::connectToNetwork() {
     if (_ssid == NULL || _password == NULL) {
         _connectionStatus = NET_FAILED;
-        return;
+        return _connectionStatus;
     }
 
-    WiFi.mode(WIFI_STA);
+    WiFi.mode(WIFI_AP_STA);
     WiFi.begin(_ssid, _password);
+
     if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-        _connectionStatus = NET_FAILED;
-        return;
+        Serial.println("WiFi connection failed!");
+        _connectionStatus = NET_SETUP;
+        return _connectionStatus;
     }
+
     _connectionStatus = NET_CONNECTED;
+    Serial.println("Connected to WiFi");
+    Serial.println("IP address: " + WiFi.localIP().toString());
+    Serial.println("MAC address: " + WiFi.macAddress());
     strncpy(_IPAddress, WiFi.localIP().toString().c_str(), 16);
     strncpy(_MACAddress, WiFi.macAddress().c_str(), 18);
+    return _connectionStatus;
 }
 
 
@@ -117,7 +126,46 @@ char* AutomathausESPWifiNetworking::getMACAddress() {
     return _MACAddress;
 }
 
+void AutomathausESPWifiNetworking::disconnectFromNetwork() {
+    WiFi.disconnect();
+    _connectionStatus = NET_DISCONNECTED;
+}
+
 // Get the connection status of the device
 ConnectionStatus AutomathausESPWifiNetworking::getConnectionStatus() {
     return _connectionStatus;
+}
+
+void AutomathausESPWifiNetworking::startSetupMode() {
+    randomSeed(millis());
+    String randomStr = "";
+    for (int i = 0; i < 5; i++) {
+        int randomNumber = random(0, 10); // Generate a random number between 0 and 9
+        randomStr += String(randomNumber);
+    }
+
+    Serial.println("Starting configuration Access point");
+    WiFi.mode(WIFI_AP_STA);
+    WiFi.softAP(HOSTNAME + randomStr, AP_PASSWORD);
+    _dnsServer.start(53, "*", WiFi.softAPIP());
+
+    Serial.println("Access point started");
+    Serial.print("SSID: ");
+    Serial.println(HOSTNAME + randomStr);
+    Serial.print("IP address: ");
+    Serial.println(WiFi.softAPIP().toString());
+}
+
+
+
+void AutomathausESPWifiNetworking::housekeeping(){
+    unsigned long currentMillis = millis();
+    if(_connectionStatus == NET_SETUP){
+        _dnsServer.processNextRequest();
+
+        if (currentMillis - _previousMillis >= 5000) {
+            _previousMillis = currentMillis;
+            connectToNetwork();
+        }
+    }
 }
