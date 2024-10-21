@@ -35,4 +35,19 @@ class AutomathausNetworking {
 };
 
 
+
+
 #endif  // AUTOMATHAUSNETWORKING_H
+
+#ifndef AUTOMATHAUSWIFI_H
+#define AUTOMATHAUSWIFI_H
+
+class AutomathausWifiNetworking : public AutomathausNetworking {
+    public:
+        AutomathausWifiNetworking() {};
+        virtual ~AutomathausWifiNetworking() {};
+
+        virtual std::string scanWifiNetworks() = 0;
+};
+
+#endif  // AUTOMATHAUSWIFI_H

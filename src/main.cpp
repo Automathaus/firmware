@@ -5,8 +5,8 @@
 
 AsyncWebServer server(80);
 AutomathausCryptoRSAMbed automathausCrypto;
-AutomathausAsyncWebServer automathausWebServer(server, automathausCrypto);
 AutomathausESPWifiNetworking automathausWifiNetworking(WIFI_SSID, WIFI_PASSWORD);
+AutomathausAsyncWebServer automathausWebServer(server, automathausWifiNetworking, automathausCrypto);
 Automathaus automathaus(automathausWifiNetworking, automathausWebServer);
 
 void setup() {

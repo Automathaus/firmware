@@ -25,8 +25,8 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
         request->send(200, "text/json", route);
     });
 
-    _server.on("/wifiScan", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(200, "application/json", AutomathausESPWifiNetworking::scanWifiNetworks().c_str());
+    _server.on("/wifiScan", HTTP_GET, [this](AsyncWebServerRequest *request) {
+        request->send(200, "application/json", this->_networking.scanWifiNetworks().c_str());
     });
 
 
@@ -35,37 +35,6 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     });
 
 
-    // _server.on("/sendEncryptedDataInJSON", HTTP_POST, [this](AsyncWebServerRequest *request) {
-    //     JsonDocument doc;
-
-    //     DeserializationError error = deserializeJson(doc, request->_tempObject);
-    //     if (error) {
-    //         Serial.println(error.c_str());
-    //         request->send(400, "application/json", "{\"returnValue\": \"Invalid JSON\"}");
-    //         return;
-    //     }
-
-    //     const char* encryptedData = doc["data"];
-    //     char decryptedData[strlen(encryptedData) + 1];
-    //     strncpy(decryptedData, encryptedData, strlen(encryptedData) + 1);
-    //     size_t decrypted_len = this->_crypto.decryptFromB64Encoded((unsigned char*)decryptedData, strlen(decryptedData));
-
-    //     request->send(200, "application/json", decryptedData);
-    // },
-    // NULL,
-    // handleBody);
-
-    // _server.on("/sendEncryptedBody", HTTP_POST, [this](AsyncWebServerRequest *request) {
-    //     // (void)decryptEncryptedBody(request);
-    //     (void)this->_crypto.decryptFromB64Encoded((unsigned char*)request->_tempObject, request->contentLength());
-    //     request->send(200, "application/json", (char*)request->_tempObject);
-    // },
-    // NULL,
-    // handleBody);
-
-
-
-    // Define an endpoint (/ap-only) that is only accessible in AP mode using ON_AP_FILTER
     _server.on("/setNodeConfig", HTTP_POST, [this](AsyncWebServerRequest *request) {
         size_t decrypted_len = this->_crypto.decryptFromB64Encoded((unsigned char*)request->_tempObject, request->contentLength());
         if(decrypted_len > 0){
@@ -136,7 +105,7 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
         request->redirect("/");
     });
 
-    DefaultHeaders::Instance().addHeader("Automathaus-Node-ID", "1");
+    // DefaultHeaders::Instance().addHeader("Automathaus-Node-ID", "1");
 }
 
 
@@ -197,7 +166,44 @@ size_t AutomathausAsyncWebServer::decryptEncryptedBody(AsyncWebServerRequest *re
 
 
 void AutomathausAsyncWebServer::begin(){
-    (void)AutomathausESPWifiNetworking::scanWifiNetworks();
+    (void)_networking.scanWifiNetworks();
     setGeneratedBindings();
     _server.begin();
 }
+
+
+
+
+
+
+
+
+
+//Used for testing
+// _server.on("/sendEncryptedDataInJSON", HTTP_POST, [this](AsyncWebServerRequest *request) {
+//     JsonDocument doc;
+
+//     DeserializationError error = deserializeJson(doc, request->_tempObject);
+//     if (error) {
+//         Serial.println(error.c_str());
+//         request->send(400, "application/json", "{\"returnValue\": \"Invalid JSON\"}");
+//         return;
+//     }
+
+//     const char* encryptedData = doc["data"];
+//     char decryptedData[strlen(encryptedData) + 1];
+//     strncpy(decryptedData, encryptedData, strlen(encryptedData) + 1);
+//     size_t decrypted_len = this->_crypto.decryptFromB64Encoded((unsigned char*)decryptedData, strlen(decryptedData));
+
+//     request->send(200, "application/json", decryptedData);
+// },
+// NULL,
+// handleBody);
+
+// _server.on("/sendEncryptedBody", HTTP_POST, [this](AsyncWebServerRequest *request) {
+//     // (void)decryptEncryptedBody(request);
+//     (void)this->_crypto.decryptFromB64Encoded((unsigned char*)request->_tempObject, request->contentLength());
+//     request->send(200, "application/json", (char*)request->_tempObject);
+// },
+// NULL,
+// handleBody);

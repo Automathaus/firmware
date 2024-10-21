@@ -2,7 +2,6 @@
 #define AUTOMATHAUSWEBSERVER_H
 
 #include "AutomathausState.h"
-#include <ESPAsyncWebServer.h>
 
 namespace Routes {
     constexpr char ROOT[] = "/";
@@ -21,6 +20,8 @@ class AutomathausWebBindings {
 class AutomathausWebServer {
    protected:
     AutomathausWebServerMode _mode = WEB_SERVER_NORMAL_MODE;
+    // AutomathausKeyValueStore* _kvStore;
+
     constexpr static const char *JSON_TEMPLATE = "{\"route\":\"%s\"}";
 
    public:

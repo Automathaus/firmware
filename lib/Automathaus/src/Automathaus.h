@@ -10,6 +10,7 @@
 #include "AutomathausAsyncWebServer.h"
 #include "AutomathausState.h"
 #include "AutomathausNetworking.h"
+#include "AutomathausKVSEspPreferences.h"
 #include "./generated/webgui.h"
 
 

@@ -12,7 +12,7 @@
 #include "AutomathausNetworking.h"
 #include "AutomathausCryptoRSAMbed.h"
 
-class AutomathausESPWifiNetworking : public AutomathausNetworking {
+class AutomathausESPWifiNetworking : public AutomathausWifiNetworking {
     private:
         DNSServer _dnsServer;
         unsigned long _previousMillis = 0;
@@ -31,7 +31,7 @@ class AutomathausESPWifiNetworking : public AutomathausNetworking {
         void disconnectFromNetwork() override;
         ConnectionStatus getConnectionStatus() override;
         
-        static std::string scanWifiNetworks();
+        std::string scanWifiNetworks() override;
 
         void startSetupMode() override;
         void housekeeping() override;
