@@ -70,7 +70,58 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
         size_t decrypted_len = this->_crypto.decryptFromB64Encoded((unsigned char*)request->_tempObject, request->contentLength());
         if(decrypted_len > 0){
             Serial.println("Body decrypted");
-            Serial.write((unsigned char*)request->_tempObject, decrypted_len);
+            JsonDocument doc;
+
+            DeserializationError error = deserializeJson(doc, request->_tempObject);
+            if (error) {
+                Serial.println(error.c_str());
+                request->send(400, "application/json", "{\"returnValue\": \"Invalid JSON\"}");
+                return;
+            }
+
+            const char* selectedNetwork;
+            const char* password;
+            const char* mode;
+            bool configureOtherNodes;
+
+            if (doc["selectedNetwork"].is<const char*>()) {
+                selectedNetwork = doc["selectedNetwork"].as<const char*>();
+            } else {
+                request->send(400, "application/json", "{\"returnValue\": \"Invalid or missing 'selectedNetwork' parameter\"}");
+                return;
+            }
+
+            if (doc["password"].is<const char*>()) {
+                password = doc["password"].as<const char*>();
+            } else {
+                request->send(400, "application/json", "{\"returnValue\": \"Invalid or missing 'password' parameter\"}");
+                return;
+            }
+
+            if (doc["mode"].is<const char*>()) {
+                mode = doc["mode"].as<const char*>();
+            } else {
+                request->send(400, "application/json", "{\"returnValue\": \"Invalid or missing 'mode' parameter\"}");
+                return;
+            }
+
+            if (doc["configureOtherNodes"].is<bool>()) {
+                configureOtherNodes = doc["configureOtherNodes"].as<bool>();
+            } else {
+                request->send(400, "application/json", "{\"returnValue\": \"Invalid or missing 'configureOtherNodes' parameter\"}");
+                return;
+            }
+
+            //print the values
+            Serial.print("Selected Network: ");
+            Serial.println(selectedNetwork);
+            Serial.print("Password: ");
+            Serial.println(password);
+            Serial.print("Mode: ");
+            Serial.println(mode);
+            Serial.print("Configure Other Nodes: ");
+            Serial.println(configureOtherNodes);
+
             request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
         }else{
             request->send(400, "application/json", "{\"returnValue\": \"Error\"}");
@@ -146,7 +197,6 @@ size_t AutomathausAsyncWebServer::decryptEncryptedBody(AsyncWebServerRequest *re
 
 
 void AutomathausAsyncWebServer::begin(){
-    // (void)AutomathausESPWifiNetworking::scanWifiNetworks();
     setGeneratedBindings();
     _server.begin();
 }

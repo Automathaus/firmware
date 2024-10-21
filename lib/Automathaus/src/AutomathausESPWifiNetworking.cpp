@@ -174,13 +174,7 @@ void AutomathausESPWifiNetworking::startSetupMode() {
 
 
 void AutomathausESPWifiNetworking::housekeeping(){
-    // unsigned long currentMillis = millis();
     if(_connectionStatus == NET_SETUP){
         _dnsServer.processNextRequest();
-
-        // if (currentMillis - _previousMillis >= 10000) {
-        //     _previousMillis = currentMillis;
-        //     connectToNetwork();
-        // }
     }
 }
