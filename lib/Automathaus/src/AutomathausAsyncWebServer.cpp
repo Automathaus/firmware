@@ -111,6 +111,11 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
         request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
     });
 
+    _server.on("/resetKVStore", HTTP_GET, [this](AsyncWebServerRequest *request){
+        _kvStore->clearAll();
+        request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
+    });
+
 
     _server.onNotFound([](AsyncWebServerRequest *request){
         request->redirect("/");

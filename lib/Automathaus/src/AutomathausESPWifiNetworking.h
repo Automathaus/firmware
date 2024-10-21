@@ -16,15 +16,13 @@ class AutomathausESPWifiNetworking : public AutomathausWifiNetworking {
     private:
         DNSServer _dnsServer;
         unsigned long _previousMillis = 0;
-        
-        char _ssid[33];
-        char _password[65];
 
     public:
         AutomathausESPWifiNetworking(const char* ssid, const char* password);
+        AutomathausESPWifiNetworking();
         ~AutomathausESPWifiNetworking();
         
-        void setCredentials(const char* ssid, const char* password);
+        void setCredentials(const char* ssid, const char* password) override;
         char* getIPAddress() override;
         char* getMACAddress() override;
         ConnectionStatus connectToNetwork() override;

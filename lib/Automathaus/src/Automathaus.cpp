@@ -23,9 +23,17 @@ void Automathaus::start(int serialBaudrate){
         return;
     }
 
+    ConnectionStatus connectionStatus = NET_SETUP;
+
+    if (_kvStore.getWifiSSID().length() > 0 && _kvStore.getWifiPassword().length() > 0) {
+        _networking.setCredentials(_kvStore.getWifiSSID().c_str(), _kvStore.getWifiPassword().c_str());
+        connectionStatus = _networking.connectToNetwork();
+    }
+
     _state = TRY_CONNECT;
 
-    switch (_networking.connectToNetwork()) {
+
+    switch (connectionStatus) {
         case NET_CONNECTED:
             _state = CONNECTED;
             Serial.println("Connected to network");

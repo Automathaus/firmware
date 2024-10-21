@@ -5,6 +5,10 @@ AutomathausESPWifiNetworking::AutomathausESPWifiNetworking(const char* ssid, con
     setCredentials(ssid, password);
 }
 
+AutomathausESPWifiNetworking::AutomathausESPWifiNetworking() {
+    // Default constructor
+}
+
 AutomathausESPWifiNetworking::~AutomathausESPWifiNetworking() {
     // Destructor
 }
@@ -143,6 +147,7 @@ ConnectionStatus AutomathausESPWifiNetworking::getConnectionStatus() {
 }
 
 void AutomathausESPWifiNetworking::startSetupMode() {
+    _connectionStatus = NET_SETUP;
     randomSeed(millis());
     String randomStr = "";
     // for (int i = 0; i < 5; i++) {
