@@ -2,7 +2,7 @@
 #define AUTOMATHAUSWEBSERVER_H
 
 #include "AutomathausState.h"
-
+#include "AutomathausKeyValueStore.h"
 namespace Routes {
     constexpr char ROOT[] = "/";
     constexpr char SETUP[] = "/setup";
@@ -20,7 +20,6 @@ class AutomathausWebBindings {
 class AutomathausWebServer {
    protected:
     AutomathausWebServerMode _mode = WEB_SERVER_NORMAL_MODE;
-    // AutomathausKeyValueStore* _kvStore;
 
     constexpr static const char *JSON_TEMPLATE = "{\"route\":\"%s\"}";
 
@@ -37,7 +36,7 @@ class AutomathausWebServer {
      * @param webPage The html code for the web app
      */
     virtual void setWebInterface(const char *webPage) = 0;
-    virtual void begin() = 0;
+    virtual void begin(AutomathausKeyValueStore &kvStore) = 0;
 
     void setMode(AutomathausWebServerMode mode) {
         _mode = mode;

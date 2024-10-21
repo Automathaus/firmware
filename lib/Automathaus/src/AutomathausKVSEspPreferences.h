@@ -12,8 +12,8 @@ class AutomathausKVSEspPreferences : public AutomathausKeyValueStore {
         AutomathausKVSEspPreferences();
         virtual ~AutomathausKVSEspPreferences();
 
-        void begin();
-        void clearAll() override;
+        bool begin() override;
+        bool clearAll() override;
 
         void setNodeName(const char* nodeName) override;
         void setNodeID(const char* nodeID) override;

@@ -5,19 +5,18 @@
 
 AsyncWebServer server(80);
 AutomathausCryptoRSAMbed automathausCrypto;
-AutomathausKVSEspPreferences automathausKVSEspPreferences;
+AutomathausKVSEspPreferences automathausPreferences;
 AutomathausESPWifiNetworking automathausWifiNetworking(WIFI_SSID, WIFI_PASSWORD);
 AutomathausAsyncWebServer automathausWebServer(server, automathausWifiNetworking, automathausCrypto);
-Automathaus automathaus(automathausWifiNetworking, automathausWebServer);
+Automathaus automathaus(automathausWifiNetworking, automathausWebServer, automathausPreferences);
 
 void setup() {
     automathaus.start();
 
-    automathausKVSEspPreferences.begin();
-    automathausKVSEspPreferences.clearAll();
-    automathausKVSEspPreferences.setNodeName("AutomathausDev");
+    automathausPreferences.clearAll();
+    automathausPreferences.setNodeName("AutomathausDev");
     Serial.println("Node Name:");
-    Serial.println(automathausKVSEspPreferences.getNodeName());
+    Serial.println(automathausPreferences.getNodeName());
 
 
     // Serial.println("IP Address:");

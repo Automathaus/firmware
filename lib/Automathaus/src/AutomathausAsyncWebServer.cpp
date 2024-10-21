@@ -91,6 +91,9 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
             Serial.print("Configure Other Nodes: ");
             Serial.println(configureOtherNodes);
 
+            _kvStore->setWifiCredentials(selectedNetwork, password);
+            _kvStore->setOperationalMode(mode);
+
             request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
         }else{
             request->send(400, "application/json", "{\"returnValue\": \"Error\"}");
@@ -99,6 +102,14 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     NULL,
     handleBody).setFilter(ON_AP_FILTER);
 
+
+    //test endpoint to print to serial the kvStore
+    _server.on("/testKVStore", HTTP_GET, [this](AsyncWebServerRequest *request){
+        Serial.println(_kvStore->getWifiSSID());
+        Serial.println(_kvStore->getWifiPassword());
+        Serial.println(_kvStore->getOperationalMode());
+        request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
+    });
 
 
     _server.onNotFound([](AsyncWebServerRequest *request){
@@ -165,8 +176,9 @@ size_t AutomathausAsyncWebServer::decryptEncryptedBody(AsyncWebServerRequest *re
 }
 
 
-void AutomathausAsyncWebServer::begin(){
+void AutomathausAsyncWebServer::begin(AutomathausKeyValueStore &kvStore){
     (void)_networking.scanWifiNetworks();
+    _kvStore = &kvStore;
     setGeneratedBindings();
     _server.begin();
 }

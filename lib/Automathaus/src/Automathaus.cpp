@@ -1,7 +1,7 @@
 #include "Automathaus.h"
 #include "AutomathausLogo.h"
 
-Automathaus::Automathaus(AutomathausNetworking &networking, AutomathausWebServer &webServer) : _networking(networking), _webServer(webServer) {
+Automathaus::Automathaus(AutomathausNetworking &networking, AutomathausWebServer &webServer, AutomathausKeyValueStore &kvStore) : _networking(networking), _webServer(webServer), _kvStore(kvStore) {
     _state = START;
 }
 
@@ -12,10 +12,16 @@ void Automathaus::start(int serialBaudrate){
         Serial.begin(serialBaudrate);
     }
 
+
     Serial.println("===================================================");
     Serial.println("||            Automathaus - version 0.0.1        ||");
     Serial.println("===================================================");
     Serial.println(AUTOMATHAUS_LOGO);
+
+    if (!_kvStore.begin()) {
+        Serial.println("Failed to initialize key-value store");
+        return;
+    }
 
     _state = TRY_CONNECT;
 
@@ -32,10 +38,10 @@ void Automathaus::start(int serialBaudrate){
             _state = NODE_SETUP;
             break;
     }
-        
+
     Serial.println("Automathaus started");
     _webServer.setWebInterface(INDEX_HTML);
-    _webServer.begin();
+    _webServer.begin(_kvStore);
 }
 
 AutomathausState Automathaus::getState(){

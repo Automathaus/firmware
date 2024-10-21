@@ -19,6 +19,7 @@ class AutomathausAsyncWebServer : public AutomathausWebServer {
     constexpr static const size_t _maxContentLength = 16384;
     AsyncWebServer &_server;
     AutomathausCrypto &_crypto;
+    AutomathausKeyValueStore *_kvStore = nullptr;
     AutomathausWifiNetworking &_networking;
 
    public:
@@ -34,7 +35,7 @@ class AutomathausAsyncWebServer : public AutomathausWebServer {
     static void handleBody(AsyncWebServerRequest *request, uint8_t *data,
                            size_t len, size_t index, size_t total);
     size_t decryptEncryptedBody(AsyncWebServerRequest *request);
-    void begin() override;
+    void begin(AutomathausKeyValueStore &kvStore) override;
 };
 
 #endif  // AUTOMATHAUSASYNCWEBSERVER_H

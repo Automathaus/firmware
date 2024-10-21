@@ -7,12 +7,12 @@ AutomathausKVSEspPreferences::~AutomathausKVSEspPreferences() {
     _preferences.end();
 }
 
-void AutomathausKVSEspPreferences::begin() {
-    _preferences.begin("automathaus", false);
+bool AutomathausKVSEspPreferences::begin() {
+    return _preferences.begin("automathaus", false);
 }
 
-void AutomathausKVSEspPreferences::clearAll() {
-    _preferences.clear();
+bool AutomathausKVSEspPreferences::clearAll() {
+    return _preferences.clear();
 }
 
 void AutomathausKVSEspPreferences::setNodeName(const char* nodeName) {
