@@ -26,7 +26,7 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     });
 
     _server.on("/wifiScan", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(200, "application/json", AutomathausESPWifiNetworking::getWifiNetworksJson().c_str());
+        request->send(200, "application/json", AutomathausESPWifiNetworking::scanWifiNetworks().c_str());
     });
 
 
@@ -197,6 +197,7 @@ size_t AutomathausAsyncWebServer::decryptEncryptedBody(AsyncWebServerRequest *re
 
 
 void AutomathausAsyncWebServer::begin(){
+    (void)AutomathausESPWifiNetworking::scanWifiNetworks();
     setGeneratedBindings();
     _server.begin();
 }

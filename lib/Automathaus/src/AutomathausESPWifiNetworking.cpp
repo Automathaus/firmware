@@ -1,6 +1,5 @@
 #include "AutomathausESPWifiNetworking.h"
 
-std::string AutomathausESPWifiNetworking::_wifiNetworksJson;
 
 AutomathausESPWifiNetworking::AutomathausESPWifiNetworking(const char* ssid, const char* password) {
     setCredentials(ssid, password);
@@ -27,7 +26,6 @@ void AutomathausESPWifiNetworking::setCredentials(const char* ssid, const char* 
 // Connect to the WiFi network
 ConnectionStatus AutomathausESPWifiNetworking::connectToNetwork() {
     WiFi.disconnect();    // Disconnect from any network
-    scanWifiNetworks();
     delay(100); 
 
     if (_ssid == NULL || _password == NULL) {
@@ -55,23 +53,15 @@ ConnectionStatus AutomathausESPWifiNetworking::connectToNetwork() {
 }
 
 
-void AutomathausESPWifiNetworking::scanWifiNetworks(){
-    _wifiNetworksJson = "[";
-    WiFi.mode(WIFI_STA);
-    delay(100);
-
-    int n = WiFi.scanNetworks();
-    Serial.print("Scanning for WiFi networks...");
-    Serial.print("Found ");
-    Serial.print(n);
-    Serial.println(" networks");
-
-    if (n == 0) {
-        Serial.println("No networks found");
-    } else {
+std::string AutomathausESPWifiNetworking::scanWifiNetworks(){
+    std::string json = "[";
+    int n = WiFi.scanComplete();
+    if (n == -2) {
+        WiFi.scanNetworks(true);
+    } else if (n) {
         for (int i = 0; i < n; ++i) {
-            if (i) _wifiNetworksJson += ",";
-            _wifiNetworksJson += "{";
+            if (i) json += ",";
+            json += "{";
             int rssi = WiFi.RSSI(i);
             int signal_strength;
             if (rssi >= -50) {
@@ -86,48 +76,50 @@ void AutomathausESPWifiNetworking::scanWifiNetworks(){
                 signal_strength = 0;
             }
 
-            _wifiNetworksJson += "\"signalStrength\":" + std::to_string(signal_strength);
-            _wifiNetworksJson += ",\"ssid\":\"" + std::string(WiFi.SSID(i).c_str()) + "\"";
-            _wifiNetworksJson += ",\"bssid\":\"" + std::string(WiFi.BSSIDstr(i).c_str()) + "\"";
-            _wifiNetworksJson += ",\"channel\":" + std::to_string(WiFi.channel(i));
-            _wifiNetworksJson += ",\"secure\":\"";
+            json += "\"signalStrength\":" + std::to_string(signal_strength);
+            json += ",\"ssid\":\"" + std::string(WiFi.SSID(i).c_str()) + "\"";
+            json += ",\"bssid\":\"" + std::string(WiFi.BSSIDstr(i).c_str()) + "\"";
+            json += ",\"channel\":" + std::to_string(WiFi.channel(i));
+            json += ",\"secure\":\"";
 
             switch (WiFi.encryptionType(i)) {
                 case WIFI_AUTH_OPEN:
-                    _wifiNetworksJson += "Open";
+                    json += "Open";
                     break;
                 case WIFI_AUTH_WEP:
-                    _wifiNetworksJson += "WEP";
+                    json += "WEP";
                     break;
                 case WIFI_AUTH_WPA_PSK:
-                    _wifiNetworksJson += "WPA-PSK";
+                    json += "WPA-PSK";
                     break;
                 case WIFI_AUTH_WPA2_PSK:
-                    _wifiNetworksJson += "WPA2-PSK";
+                    json += "WPA2-PSK";
                     break;
                 case WIFI_AUTH_WPA_WPA2_PSK:
-                    _wifiNetworksJson += "WPA/WPA2-PSK";
+                    json += "WPA/WPA2-PSK";
                     break;
                 case WIFI_AUTH_WPA2_ENTERPRISE:
-                    _wifiNetworksJson += "WPA2-Enterprise";
+                    json += "WPA2-Enterprise";
                     break;
                 default:
-                    _wifiNetworksJson += "Sconosciuto";
+                    json += "Sconosciuto";
                     break;
             }
             
-            _wifiNetworksJson += "\"";
-            _wifiNetworksJson += "}";
+            json += "\"";
+            json += "}";
         }
         WiFi.scanDelete();
+        if (WiFi.scanComplete() == -2) {
+            WiFi.scanNetworks(true);
+        }
     }
-    _wifiNetworksJson += "]";
-    Serial.println(_wifiNetworksJson.c_str());
+    json += "]";
+
+    Serial.println(json.c_str());
+    return json;
 }
 
-std::string AutomathausESPWifiNetworking::getWifiNetworksJson(){
-    return _wifiNetworksJson;
-}
 
 
 // Get the IP address of the device
@@ -151,7 +143,6 @@ ConnectionStatus AutomathausESPWifiNetworking::getConnectionStatus() {
 }
 
 void AutomathausESPWifiNetworking::startSetupMode() {
-    // scanWifiNetworks();
     randomSeed(millis());
     String randomStr = "";
     // for (int i = 0; i < 5; i++) {
@@ -174,7 +165,13 @@ void AutomathausESPWifiNetworking::startSetupMode() {
 
 
 void AutomathausESPWifiNetworking::housekeeping(){
+    unsigned long currentMillis = millis();
     if(_connectionStatus == NET_SETUP){
         _dnsServer.processNextRequest();
+
+        // if (currentMillis - _previousMillis >= 5000) {
+        //     _previousMillis = currentMillis;
+        //     connectToNetwork();
+        // }
     }
 }
