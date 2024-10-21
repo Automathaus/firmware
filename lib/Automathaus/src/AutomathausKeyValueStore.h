@@ -13,10 +13,10 @@ class AutomathausKeyValueStore {
         virtual void setOperationalMode(const char* operationalMode);
         virtual void setNodeType(const char* nodeType);
 
-        virtual const char* getNodeName();
-        virtual const char* getNodeID();
-        virtual const char* getNodeType();
-        virtual const char* getOperationalMode();
+        virtual String getNodeName();
+        virtual String getNodeID();
+        virtual String getNodeType();
+        virtual String getOperationalMode();
 };
 
 #endif  // AUTOMATHAUSEKEYVALUESTORE_H

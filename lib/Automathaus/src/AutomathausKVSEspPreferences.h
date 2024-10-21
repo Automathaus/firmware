@@ -21,12 +21,12 @@ class AutomathausKVSEspPreferences : public AutomathausKeyValueStore {
         void setOperationalMode(const char* operationalMode) override;
         void setNodeType(const char* nodeType) override;
 
-        const char* getNodeName() override;
-        const char* getNodeID() override;
-        const char* getNodeType() override;
-        const char* getWifiSSID();
-        const char* getWifiPassword();
-        const char* getOperationalMode() override;
+        String getNodeName() override;
+        String getNodeID() override;
+        String getNodeType() override;
+        String getWifiSSID();
+        String getWifiPassword();
+        String getOperationalMode() override;
 };
 
 #endif  // AUTOMATHAUSEKVSESPPREFERENCES_H

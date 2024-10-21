@@ -13,11 +13,11 @@ Automathaus automathaus(automathausWifiNetworking, automathausWebServer);
 void setup() {
     automathaus.start();
 
-    // automathausKVSEspPreferences.begin();
-    // automathausKVSEspPreferences.clearAll();
-    // automathausKVSEspPreferences.setNodeName("AutomathausDev");
-    // Serial.println("Node Name:");
-    // Serial.println(automathausKVSEspPreferences.getNodeName());
+    automathausKVSEspPreferences.begin();
+    automathausKVSEspPreferences.clearAll();
+    automathausKVSEspPreferences.setNodeName("AutomathausDev");
+    Serial.println("Node Name:");
+    Serial.println(automathausKVSEspPreferences.getNodeName());
 
 
     // Serial.println("IP Address:");

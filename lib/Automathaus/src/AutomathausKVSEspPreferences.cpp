@@ -36,26 +36,26 @@ void AutomathausKVSEspPreferences::setNodeType(const char* nodeType) {
     _preferences.putString("nodeType", nodeType);
 }
 
-const char* AutomathausKVSEspPreferences::getNodeName() {
-    return _preferences.getString("nodeName", "").c_str();
+String AutomathausKVSEspPreferences::getNodeName() {
+    return _preferences.getString("nodeName", "");
 }
 
-const char* AutomathausKVSEspPreferences::getNodeID() {
-    return _preferences.getString("nodeID", "").c_str();
+String AutomathausKVSEspPreferences::getNodeID() {
+    return _preferences.getString("nodeID", "");
 }
 
-const char* AutomathausKVSEspPreferences::getNodeType() {
-    return _preferences.getString("nodeType", "").c_str();
+String AutomathausKVSEspPreferences::getNodeType() {
+    return _preferences.getString("nodeType", "");
 }
 
-const char* AutomathausKVSEspPreferences::getWifiSSID() {
-    return _preferences.getString("ssid", "").c_str();
+String AutomathausKVSEspPreferences::getWifiSSID() {
+    return _preferences.getString("ssid", "");
 }
 
-const char* AutomathausKVSEspPreferences::getWifiPassword() {
-    return _preferences.getString("password", "").c_str();
+String AutomathausKVSEspPreferences::getWifiPassword() {
+    return _preferences.getString("password", "");
 }
 
-const char* AutomathausKVSEspPreferences::getOperationalMode() {
-    return _preferences.getString("operationalMode", "").c_str();
+String AutomathausKVSEspPreferences::getOperationalMode() {
+    return _preferences.getString("operationalMode", "");
 }
