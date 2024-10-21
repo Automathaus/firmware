@@ -6,11 +6,14 @@
 
 class AutomathausKVSEspPreferences : public AutomathausKeyValueStore {
     private:
-        Preferences _preferences;
 
     public:
+        Preferences _preferences;
         AutomathausKVSEspPreferences();
         virtual ~AutomathausKVSEspPreferences();
+
+        void begin();
+        void clearAll() override;
 
         void setNodeName(const char* nodeName) override;
         void setNodeID(const char* nodeID) override;

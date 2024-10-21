@@ -3,7 +3,9 @@
 
 class AutomathausKeyValueStore {
     public:
-        virtual ~AutomathausKeyValueStore();
+        virtual ~AutomathausKeyValueStore() = default;
+
+        virtual void clearAll();
 
         virtual void setNodeName(const char* nodeName);
         virtual void setNodeID(const char* nodeID);

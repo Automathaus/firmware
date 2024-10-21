@@ -1,11 +1,18 @@
 #include "AutomathausKVSEspPreferences.h"
 
 AutomathausKVSEspPreferences::AutomathausKVSEspPreferences() {
-    _preferences.begin("automathaus", false);
 }
 
 AutomathausKVSEspPreferences::~AutomathausKVSEspPreferences() {
     _preferences.end();
+}
+
+void AutomathausKVSEspPreferences::begin() {
+    _preferences.begin("automathaus", false);
+}
+
+void AutomathausKVSEspPreferences::clearAll() {
+    _preferences.clear();
 }
 
 void AutomathausKVSEspPreferences::setNodeName(const char* nodeName) {
