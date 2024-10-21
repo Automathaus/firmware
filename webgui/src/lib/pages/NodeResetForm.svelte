@@ -29,9 +29,40 @@
     import * as Accordion from "$lib/components/ui/accordion";
 
     import { Toggle } from "$lib/components/ui/toggle/index.js";
-    import type { WifiNetwork } from "$lib/types";
+    import { toast } from "svelte-sonner";
+
+    import { setNodeConfig } from "$lib/automathaus/automathausWebApi";
 
     let showPassword = false;
+    
+    let formData = {
+        selectedNetwork: "",
+        password: "",
+        mode: "",
+        configureOtherNodes: false
+    };
+
+    async function handleSubmit(){
+        let requiredFields = [];
+        if(formData.selectedNetwork == "") requiredFields.push("Wifi network");
+        if(formData.password == "") requiredFields.push("Wifi password");
+        if(formData.mode == "") requiredFields.push("Operational mode");   
+
+        if(requiredFields.length > 0) {
+            toast.error(
+                "Form submition error",
+                {description: "Please fill the required fields: " + requiredFields.join(", ")}
+            );
+            return;
+        }
+
+        let success = await setNodeConfig(formData);
+        if(success) {
+            toast.success("Node configuration submitted");
+        } else {
+            toast.error("Failed to submit node configuration");
+        }
+    }
 </script>
 
 <div class="flex flex-col space-y-4 z-10">
@@ -50,91 +81,90 @@
             <Card.Description>Please connect the node to your network</Card.Description>
             </Card.Header>
         <Card.Content>
-            <form>
-                <div class="grid w-full items-center gap-6">
-                    <div class="flex flex-col space-y-1.5">
-                        <Label for="combo">Wifi network</Label>
-                        <Combobox id="combo"/>
-                    </div>
-                    <div class="flex flex-col space-y-1.5">
-                        <Label for="password">Password</Label>
-                        <div class="flex items-center space-x-2">
-                            <Input
-                                id="password"
-                                placeholder="Wifi password"
-                                type="{!showPassword ? "password" : "text"}"
-                                required
-                            />
-                            <Toggle bind:pressed={showPassword} variant="outline" class="aspect-square h-10 p-0">
-                                {#if !showPassword}
-                                    <Eye class="h-5 w-5"/>
-                                {:else}
-                                    <EyeOff class="h-5 w-5"/>
-                                {/if}
-                            </Toggle>
-                        </div>
-                    </div>
-
-                    <div class="grid w-full items-center gap-3">
-                        <Label for="mode" class="flex align-middle">
-                            Select operational mode: 
-                            <Popover.Root disableFocusTrap={true}>
-                                <Popover.Trigger>
-                                    <Info class="ml-1 h-4 w-4"/>
-                                </Popover.Trigger>
-                                <Popover.Content class="pt-2" sideOffset={5}>
-                                    <Accordion.Root>
-                                        <Accordion.Item value="item-1">
-                                            <Accordion.Trigger>
-                                                <Server/>
-                                                Server mode
-                                            </Accordion.Trigger>
-
-                                            <Accordion.Content>
-                                            The node once connected to the network will search for an automathaus server instance to connect to.
-                                            </Accordion.Content>
-                                        </Accordion.Item>
-
-                                        <Accordion.Item value="item-2">
-                                            <Accordion.Trigger><ChartNetwork/>Mesh mode</Accordion.Trigger>
-                                            <Accordion.Content>
-                                            The node will connect to other nearby nodes to form a mesh network.(WIP)
-                                            </Accordion.Content>
-                                        </Accordion.Item>
-
-                                        <Accordion.Item value="item-3">
-                                            <Accordion.Trigger><CircuitBoard/>Standalone mode</Accordion.Trigger>
-                                            <Accordion.Content>
-                                            The node will operate as a standalone device.
-                                            </Accordion.Content>
-                                        </Accordion.Item>
-                                        
-                                    </Accordion.Root>
-                                </Popover.Content>
-                            </Popover.Root>
-                        </Label>
-                        <ModeSelector />
-                    </div>
-
-                    <div class="flex items-center justify-between">
-                        <span class="flex align-middle space-x-2">
-                            <Label for="otherDev">Configure other nearby nodes</Label>
-                            <Popover.Root>
-                                <Popover.Trigger>
-                                    <Info class="h-4 w-4"/>
-                                </Popover.Trigger>
-                                <Popover.Content sideOffset={5} class="w-[15rem]">
-                                    <span class="text-sm">Try to connect to other nearby nodes to configure the wifi credentials for them.</span>
-                                </Popover.Content>
-                            </Popover.Root>
-                        </span>
-                        <Switch id="otherDev"/>
+            <div class="grid w-full items-center gap-6">
+                <div class="flex flex-col space-y-1.5">
+                    <Label for="combo">Wifi network</Label>
+                    <Combobox id="combo" bind:value={formData.selectedNetwork}/>
+                </div>
+                <div class="flex flex-col space-y-1.5">
+                    <Label for="password">Password</Label>
+                    <div class="flex items-center space-x-2">
+                        <Input
+                            id="password"
+                            placeholder="Wifi password"
+                            type="{!showPassword ? "password" : "text"}"
+                            bind:value={formData.password}
+                            required
+                        />
+                        <Toggle bind:pressed={showPassword} variant="outline" class="aspect-square h-10 p-0">
+                            {#if !showPassword}
+                                <Eye class="h-5 w-5"/>
+                            {:else}
+                                <EyeOff class="h-5 w-5"/>
+                            {/if}
+                        </Toggle>
                     </div>
                 </div>
-            </form>
+
+                <div class="grid w-full items-center gap-3">
+                    <Label for="mode" class="flex align-middle">
+                        Select operational mode: 
+                        <Popover.Root disableFocusTrap={true}>
+                            <Popover.Trigger>
+                                <Info class="ml-1 h-4 w-4"/>
+                            </Popover.Trigger>
+                            <Popover.Content class="pt-2" sideOffset={5}>
+                                <Accordion.Root>
+                                    <Accordion.Item value="item-1">
+                                        <Accordion.Trigger>
+                                            <Server/>
+                                            Server mode
+                                        </Accordion.Trigger>
+
+                                        <Accordion.Content>
+                                        The node once connected to the network will search for an automathaus server instance to connect to.
+                                        </Accordion.Content>
+                                    </Accordion.Item>
+
+                                    <Accordion.Item value="item-2">
+                                        <Accordion.Trigger><ChartNetwork/>Mesh mode</Accordion.Trigger>
+                                        <Accordion.Content>
+                                        The node will connect to other nearby nodes to form a mesh network.(WIP)
+                                        </Accordion.Content>
+                                    </Accordion.Item>
+
+                                    <Accordion.Item value="item-3">
+                                        <Accordion.Trigger><CircuitBoard/>Standalone mode</Accordion.Trigger>
+                                        <Accordion.Content>
+                                        The node will operate as a standalone device.
+                                        </Accordion.Content>
+                                    </Accordion.Item>
+                                    
+                                </Accordion.Root>
+                            </Popover.Content>
+                        </Popover.Root>
+                    </Label>
+                    <ModeSelector bind:value={formData.mode}/>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <span class="flex align-middle space-x-2">
+                        <Label for="otherDev">Configure other nearby nodes</Label>
+                        <Popover.Root>
+                            <Popover.Trigger>
+                                <Info class="h-4 w-4"/>
+                            </Popover.Trigger>
+                            <Popover.Content sideOffset={5} class="w-[15rem]">
+                                <span class="text-sm">Try to connect to other nearby nodes to configure the wifi credentials for them.</span>
+                            </Popover.Content>
+                        </Popover.Root>
+                    </span>
+                    <Switch id="otherDev" bind:checked={formData.configureOtherNodes}/>
+                </div>
+            </div>
         </Card.Content>
         <Card.Footer class="flex justify-between">
-            <Button class="w-full">Submit</Button>
+            <Button type="submit" on:click={handleSubmit} class="w-full">Submit</Button>
         </Card.Footer>
     </Card.Root>
 </div>

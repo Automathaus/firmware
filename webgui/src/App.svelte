@@ -18,25 +18,13 @@
     import Button from "$lib/components/ui/button/button.svelte";
     import { Progress } from "$lib/components/ui/progress";
     import CurveThingsScreen from "$lib/components/svg/CurveThingsScreen.svelte";
+    import { Toaster } from "$lib/components/ui/sonner";
 
     //automathaus
     import { AutomathausWebBindTest } from "$lib/automathaus/automathaus";
     import AnimAutomatLogo from '$lib/components/svg/animAutomatLogo.svelte';
     import { getPublicKey, encryptData } from '$lib/automathaus/automathausCrypto';
-
-    async function getRoute(): Promise<string>{
-        try {
-            let response = await fetch('/getRoute');
-            if(response.ok){
-                let data = await response.json();
-                return data.route;
-            }
-        } catch(e) {
-            console.error(e);
-        }
-
-        return "/";
-    }
+    import { getRoute } from '$lib/automathaus/automathausWebApi';
 
     let route = "/";
 
@@ -48,6 +36,7 @@
         progress.set(100);
     });
 
+    //DEBUG
     // async function testEncrypt(){
     //     let publicKey = await getPublicKey();
     //     let encryptedData = await encryptData(JSON.stringify({ value: "Hello World" }), publicKey);
@@ -68,7 +57,7 @@
 </script>
 
 <ModeWatcher />
-
+<Toaster richColors />
 
 {#if $progress < 100}
     <div class="w-full min-h-svh flex flex-col items-center justify-center bg-white dark:bg-zinc-950 z-20 fixed top-0 left-0" transition:blur={{ amount: 10 }}>

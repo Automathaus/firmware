@@ -26,7 +26,7 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     });
 
     _server.on("/wifiScan", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(200, "application/json", AutomathausESPWifiNetworking::scanWifiNetworks().c_str());
+        request->send(200, "application/json", AutomathausESPWifiNetworking::getWifiNetworksJson().c_str());
     });
 
 
@@ -62,6 +62,23 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     // },
     // NULL,
     // handleBody);
+
+
+
+    // Define an endpoint (/ap-only) that is only accessible in AP mode using ON_AP_FILTER
+    _server.on("/setNodeConfig", HTTP_POST, [this](AsyncWebServerRequest *request) {
+        size_t decrypted_len = this->_crypto.decryptFromB64Encoded((unsigned char*)request->_tempObject, request->contentLength());
+        if(decrypted_len > 0){
+            Serial.println("Body decrypted");
+            Serial.write((unsigned char*)request->_tempObject, decrypted_len);
+            request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
+        }else{
+            request->send(400, "application/json", "{\"returnValue\": \"Error\"}");
+        }
+    },
+    NULL,
+    handleBody).setFilter(ON_AP_FILTER);
+
 
 
     _server.onNotFound([](AsyncWebServerRequest *request){
@@ -129,7 +146,7 @@ size_t AutomathausAsyncWebServer::decryptEncryptedBody(AsyncWebServerRequest *re
 
 
 void AutomathausAsyncWebServer::begin(){
-    (void)AutomathausESPWifiNetworking::scanWifiNetworks();
+    // (void)AutomathausESPWifiNetworking::scanWifiNetworks();
     setGeneratedBindings();
     _server.begin();
 }

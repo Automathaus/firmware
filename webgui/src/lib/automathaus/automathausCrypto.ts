@@ -1,7 +1,7 @@
 import { JSEncrypt } from 'jsencrypt';
 
 export async function getPublicKey(): Promise<string> {
-    const response = await fetch("/getPublicKey");
+    const response = await fetch("/getPublicKey"); 
     const publicKey = await response.text();
     return publicKey;
 }
@@ -21,6 +21,10 @@ export async function decryptData(data: string, privateKey: string): Promise<str
     return decryptedData;
 }
 
+
+
+
+//DEBUG
 // export async function sendEncryptedData(encryptedData: string): Promise<string> {
 //     const response = await fetch('/sendEncryptedDataInJSON', {
 //         method: 'POST',

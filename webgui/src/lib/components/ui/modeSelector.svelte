@@ -5,9 +5,11 @@
     import { ChartNetwork } from 'lucide-svelte';
     import { Server } from 'lucide-svelte';
     import { CircuitBoard } from 'lucide-svelte';
+
+    export let value = "";
 </script>
 
-<RadioGroup.Root value="mode" class="grid grid-cols-3 gap-4">
+<RadioGroup.Root bind:value={value} class="grid grid-cols-3 gap-4">
     <Label
         for="server"
         class="border-muted bg-popover hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 p-4 cursor-pointer"

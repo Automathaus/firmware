@@ -5,3 +5,10 @@ export type WifiNetwork = {
     channel: number;
     secure: string;
 }
+
+export type NodeConfig = {
+    selectedNetwork: string;
+    password: string;
+    mode: string;
+    configureOtherNodes: boolean;
+}

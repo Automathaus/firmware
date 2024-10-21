@@ -3,4 +3,8 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+# OS
+.DS_Store
+Thumbs.db
+
 certs

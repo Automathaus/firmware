@@ -16,6 +16,7 @@ class AutomathausESPWifiNetworking : public AutomathausNetworking {
     private:
         DNSServer _dnsServer;
         unsigned long _previousMillis = 0;
+        static std::string _wifiNetworksJson;
         
         char _ssid[33];
         char _password[65];
@@ -31,7 +32,9 @@ class AutomathausESPWifiNetworking : public AutomathausNetworking {
         void disconnectFromNetwork() override;
         ConnectionStatus getConnectionStatus() override;
         
-        static std::string scanWifiNetworks();
+        static void scanWifiNetworks();
+        static std::string getWifiNetworksJson();
+
         void startSetupMode() override;
         void housekeeping() override;
 };

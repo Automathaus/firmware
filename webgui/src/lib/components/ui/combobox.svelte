@@ -15,14 +15,13 @@
     import { Wifi } from 'lucide-svelte';
 
     import type { WifiNetwork } from "$lib/types";
+    import { getWifiNetworks } from "$lib/automathaus/automathausWebApi";
 
     let items: WifiNetwork[] = [];
     let loading = true;
 
     let open = false;
-    let value = "";
-
-    $: selectedValue = items.find((f) => f.ssid === value)?.ssid ?? "Select a wifi network...";
+    export let value = "";
 
     function closeAndFocusTrigger(triggerId: string) {
         open = false;
@@ -33,15 +32,11 @@
 
     onMount(async () => {
         try {
-            let response = await fetch('/wifiScan');
-            if(response.ok){
-                let data = await response.json();
-                console.log(data);
-                items = data;
-                loading = false;
-            }
-        } catch(e) {
+            items = await getWifiNetworks();
+        } catch (e) {
             console.error(e);
+        } finally {
+            loading = false;
         }
     });
 </script>
@@ -56,7 +51,11 @@
             class="justify-between"
             id="{$$props.id}"
         >
-            {selectedValue}
+            {#if value !== ""}
+                {value}
+            {:else}
+                Select a wifi network...
+            {/if}
             <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
     </Popover.Trigger>
