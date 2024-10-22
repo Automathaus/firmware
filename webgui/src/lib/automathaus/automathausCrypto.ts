@@ -1,10 +1,5 @@
 import { JSEncrypt } from 'jsencrypt';
 
-export async function getPublicKey(): Promise<string> {
-    const response = await fetch("/getPublicKey"); 
-    const publicKey = await response.text();
-    return publicKey;
-}
 
 export async function encryptData(data: string, publicKey: string): Promise<string | false> {
     const encrypt = new JSEncrypt();

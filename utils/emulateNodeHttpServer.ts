@@ -1,17 +1,18 @@
 import express, { Request, Response } from "npm:express";
+import { Buffer } from "node:buffer";
 import cors from "npm:cors";
 
 const app = express();
-const port: number = 80;
+const port: number = 8080;
 
 app.use(cors());
 
 // Routes
-app.get("/getRoute", (res: Response): void => {
+app.get("/getRoute", (req: Request, res: Response): void => {
     res.json({ route: "/setup" });
 });
 
-app.get("/wifiScan", (res: Response): void => {
+app.get("/wifiScan", (req: Request, res: Response): void => {
     const wifiNetworks = [
         {
             signalStrength: 4,
@@ -43,11 +44,11 @@ app.get("/wifiScan", (res: Response): void => {
         }
     ];
 
-    res.json(wifiNetworks);
+    res.json([...wifiNetworks, ...wifiNetworks, ...wifiNetworks]);
 });
 
 
-app.get("/getPublicKey", (res: Response): void => {
+app.get("/getPublicKey", (req: Request, res: Response): void => {
     const publicKey = "-----BEGIN PUBLIC KEY-----\n" +
         "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAotQFOqrrcmk+nVoo3dh0\n" +
         "faR85uLVcDHiN6hM7G9wcl90qOkoap9iRq24rTnp2dgj0BGCYUSFMA/7qBpY1aB7\n" +
@@ -63,7 +64,7 @@ app.get("/getPublicKey", (res: Response): void => {
 
 app.post("/setNodeConfig", (req: Request, res: Response): void => {
     let rawBody = '';
-    req.on('data', chunk => {
+    req.on('data', (chunk: Buffer) => {
         rawBody += chunk.toString();
     });
     req.on('end', () => {

@@ -1,5 +1,21 @@
 import type { WifiNetwork, NodeConfig } from "$lib/types";
-import { getPublicKey, encryptData } from "$lib/automathaus/automathausCrypto";
+import { encryptData } from "$lib/automathaus/automathausCrypto";
+
+
+export async function getPublicKey(): Promise<string> {
+    const response = await fetch("/getPublicKey"); 
+    const publicKey = await response.text();
+    return publicKey;
+}
+
+export async function restartNode(): Promise<boolean> {
+    const response = await fetch("/restartNode", {
+        method: 'POST'
+    });
+    return response.ok;
+}
+
+
 export async function getRoute(): Promise<string>{
     try {
         let response = await fetch('/getRoute'); 
@@ -13,6 +29,7 @@ export async function getRoute(): Promise<string>{
 
     return "/";
 }
+
 
 export async function getWifiNetworks(): Promise<WifiNetwork[]>{
     try {

@@ -104,16 +104,22 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
 
 
     //test endpoint to print to serial the kvStore
-    _server.on("/testKVStore", HTTP_GET, [this](AsyncWebServerRequest *request){
-        Serial.println(_kvStore->getWifiSSID());
-        Serial.println(_kvStore->getWifiPassword());
-        Serial.println(_kvStore->getOperationalMode());
-        request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
-    });
+    // _server.on("/testKVStore", HTTP_GET, [this](AsyncWebServerRequest *request){
+    //     Serial.println(_kvStore->getWifiSSID());
+    //     Serial.println(_kvStore->getWifiPassword());
+    //     Serial.println(_kvStore->getOperationalMode());
+    //     request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
+    // });
 
     _server.on("/resetKVStore", HTTP_GET, [this](AsyncWebServerRequest *request){
         _kvStore->clearAll();
         request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
+    });
+
+    _server.on("/restartNode", HTTP_POST, [this](AsyncWebServerRequest *request){
+        request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
+        Serial.println("Restarting node");
+        ESP.restart();
     });
 
 

@@ -13,17 +13,15 @@
     import NodeResetForm from '$lib/pages/NodeResetForm.svelte';
 
     //components
-    import Navbar from "$lib/components/ui/navbar.svelte";
-    import CurveThing from "$lib/components/svg/CurveThing.svelte";
     import Button from "$lib/components/ui/button/button.svelte";
     import { Progress } from "$lib/components/ui/progress";
     import CurveThingsScreen from "$lib/components/svg/CurveThingsScreen.svelte";
     import { Toaster } from "$lib/components/ui/sonner";
+    import LogoAutomat from "$lib/components/svg/logoAutomat.svelte";
 
     //automathaus
     import { AutomathausWebBindTest } from "$lib/automathaus/automathaus";
     import AnimAutomatLogo from '$lib/components/svg/animAutomatLogo.svelte';
-    import { getPublicKey, encryptData } from '$lib/automathaus/automathausCrypto';
     import { getRoute } from '$lib/automathaus/automathausWebApi';
 
     let route = "/";
@@ -86,18 +84,6 @@
     <Button
     on:click={async() => console.log(await getRoute())}
     > Get Route </Button>
-    
-    <!-- <Button
-        on:click={async() => testEncrypt()}
-    > Test Encrypt </Button>
-
-    <Button
-        on:click={async() => testRawEncrypt()}
-    > Test Raw Encrypt </Button> -->
-
-    <Button
-        on:click={async() => console.log(await getPublicKey())}
-    > Get Public Key </Button>
 </div>
 
 
@@ -105,8 +91,12 @@
 
     <!-- NORMAL MODE -->
     {#if route === "/"}
-        <div>
-            <h1>Automathaus</h1>
+        <div class="flex flex-col align-middle items-center gap-4 rounded-lg border p-6 w-[23rem] backdrop-blur-md bg-white/80 dark:bg-zinc-950/50">
+            <LogoAutomat class="size-12"/>
+            <div class="flex flex-col items-center space-y-1">
+                <h2 class="text-lg leading-none tracking-tight">Automathaus node</h2>
+                <p class="text-muted-foreground text-sm">Node control pannel</p>
+            </div>
         </div>
     {:else if route === "/setup"}
         <NodeResetForm />

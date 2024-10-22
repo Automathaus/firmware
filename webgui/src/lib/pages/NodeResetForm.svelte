@@ -1,23 +1,19 @@
 <script lang="ts">
     //svelte
-    import { onMount } from "svelte";
+    import { blur } from "svelte/transition";
 
     //lucide icons
-    import { ArrowRight } from "lucide-svelte";
     import { Info } from 'lucide-svelte';
     import { ChartNetwork } from 'lucide-svelte';
     import { Server } from 'lucide-svelte';
     import { CircuitBoard } from 'lucide-svelte';
     import { Eye } from 'lucide-svelte';
     import { EyeOff } from 'lucide-svelte';
+    import { Save } from 'lucide-svelte';
     import "@fontsource/poppins";
     
     //components
-    import { ModeWatcher } from "mode-watcher";
-    import Navbar from "$lib/components/ui/navbar.svelte";
     import Button from "$lib/components/ui/button/button.svelte";
-    import CurveThing from "$lib/components/svg/CurveThing.svelte";
-    import AnimAutomatLogo from "$lib/components/svg/animAutomatLogo.svelte";
     import * as Card from "$lib/components/ui/card/index.js";
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
@@ -27,11 +23,12 @@
     import * as Popover from "$lib/components/ui/popover";
     import ModeSelector from "$lib/components/ui/modeSelector.svelte";
     import * as Accordion from "$lib/components/ui/accordion";
-
     import { Toggle } from "$lib/components/ui/toggle/index.js";
     import { toast } from "svelte-sonner";
+    import AnimAutomatLogo from "$lib/components/svg/animAutomatLogo.svelte";
 
-    import { setNodeConfig } from "$lib/automathaus/automathausWebApi";
+    //automathaus
+    import { setNodeConfig, restartNode } from "$lib/automathaus/automathausWebApi";
 
     let showPassword = false;
     
@@ -41,6 +38,14 @@
         mode: "",
         configureOtherNodes: false
     };
+
+    let showRestartPrompt = false;
+    let restarting = false;
+
+    async function handleSubmitRestartNode(){
+        restarting = true;
+        await restartNode();
+    }
 
     async function handleSubmit(){
         let requiredFields = [];
@@ -58,14 +63,31 @@
 
         let success = await setNodeConfig(formData);
         if(success) {
-            toast.success("Node configuration submitted");
+            toast.success("Node configuration saved");
+            showRestartPrompt = true;
         } else {
             toast.error("Failed to submit node configuration");
         }
     }
 </script>
 
+{#if restarting}
+<div class="w-full min-h-svh flex flex-col items-center justify-center bg-white dark:bg-zinc-950 z-20 fixed top-0 left-0" transition:blur={{ amount: 10 }}>
+    <div class="scale-50">
+        <AnimAutomatLogo />
+    </div>
+    <div class="flex flex-col items-center justify-center space-y-1 -translate-y-8">
+        <h2 class="text-2xl">Restarting...</h2>
+        <p class="text-muted-foreground w-[15rem] text-center">Check the server, if the node is online, it will show up there.</p>
+    </div>
+</div>
+{/if}
+
+
+
 <div class="flex flex-col space-y-4 z-10">
+
+    <!-- HEADER -->
     <div class="flex flex-col align-middle items-center gap-4 rounded-lg border p-6 w-[23rem] backdrop-blur-md bg-white/80 dark:bg-zinc-950/50">
         <LogoAutomat class="size-12"/>
         <div class="flex flex-col items-center space-y-1">
@@ -75,7 +97,25 @@
     </div>
         
 
-    <Card.Root class="w-[23rem] backdrop-blur-md bg-white/80 dark:bg-zinc-950/50">
+    <Card.Root class="w-[23rem] backdrop-blur-md bg-white/80 dark:bg-zinc-950/50 overflow-hidden relative">
+
+        {#if showRestartPrompt}
+            <div class="absolute top-0 right-0 h-full w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl z-50 flex flex-col items-center justify-center space-y-4 p-4" transition:blur={{ amount: 10 }}>
+                <div class="flex flex-col items-center justify-center h-full w-full">
+                    <Save class="h-12 w-12"/>
+                    <div class="flex flex-col items-center justify-center space-y-2 mt-6 w-[15rem]">
+                        <h2 class="text-lg">Configuration saved!</h2>
+                        <p class="text-muted-foreground text-center">Restart the device to apply the new configuration.</p>
+                    </div>
+                    <div class="flex flex-col items-center justify-center space-y-6 mt-10">
+                        <Button class="w-[12rem]" on:click={handleSubmitRestartNode}>Restart</Button>
+                        <Button class="w-[12rem]" variant="outline" on:click={() => showRestartPrompt = false}>Cancel</Button>
+                    </div>
+                </div>
+            </div>
+        {/if}
+
+
         <Card.Header>
             <Card.Title>Network configuration</Card.Title>
             <Card.Description>Please connect the node to your network</Card.Description>
