@@ -1,4 +1,5 @@
-#include "AutomathausWebBindTest.h"
+#include "../bindings/mainBind.h"
+#include "../bindings/AutomathausWebBindTest.h"
 #include <ArduinoJson.h>
 #include "AutomathausAsyncWebServer.h"
 
@@ -97,6 +98,14 @@ void AutomathausAsyncWebServer::setGeneratedBindings() {
 
         std::string response = "{\"returnValue\": \"" + returnValue + "\"}";
         request->send(200, "application/json", response.c_str());
+    },
+    NULL,
+    handleBody);
+
+    // Void function case for AutomathausWebBindMain::testMainBinding
+    _server.on("/bindings/AutomathausWebBindMain/testMainBinding", HTTP_POST, [](AsyncWebServerRequest *request) {
+        AutomathausWebBindMain::testMainBinding();
+        request->send(200, "text/plain", "{\"returnValue\": null}");
     },
     NULL,
     handleBody);

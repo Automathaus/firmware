@@ -205,7 +205,7 @@ def generate_bindings():
 
     # Add class-specific includes
     for header in sorted(included_headers):
-        all_cpp_bindings = f'#include "{header}"\n' + all_cpp_bindings
+        all_cpp_bindings = f'#include "../bindings/{header}"\n' + all_cpp_bindings
 
     all_cpp_bindings += "}\n"
 

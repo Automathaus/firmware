@@ -80,7 +80,27 @@ export const AutomathausWebBindTest = {
     },
 };
 
+export const AutomathausWebBindMain = {
+    
+    testMainBinding: async(): Promise<void> => {
+        try {
+            let response = await fetch('/bindings/AutomathausWebBindMain/testMainBinding', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            });
+
+            // Optionally handle the response
+        } catch(e) {
+            console.error(e);
+        }
+    },
+};
+
 
 export const bindings = {
     ...AutomathausWebBindTest,
+    ...AutomathausWebBindMain,
 };

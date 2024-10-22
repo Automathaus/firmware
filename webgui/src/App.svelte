@@ -20,7 +20,7 @@
     import LogoAutomat from "$lib/components/svg/logoAutomat.svelte";
 
     //automathaus
-    import { AutomathausWebBindTest } from "$lib/automathaus/automathaus";
+    import { AutomathausWebBindTest, AutomathausWebBindMain } from "$lib/automathaus/automathaus";
     import AnimAutomatLogo from '$lib/components/svg/animAutomatLogo.svelte';
     import { getRoute } from '$lib/automathaus/automathausWebApi';
 
@@ -68,8 +68,8 @@
 
 
 <!-- TEST BUTTONS -->
-<!-- <div class="flex flex-col absolute top-4 left-4 space-y-4 z-50">
-    <Button
+<div class="flex flex-col absolute top-4 left-4 space-y-4 z-50">
+    <!-- <Button
         on:click={async() => console.log(await AutomathausWebBindTest.addInt(2,3))}
     > Add </Button>
     <Button
@@ -83,8 +83,13 @@
     
     <Button
     on:click={async() => console.log(await getRoute())}
-    > Get Route </Button>
-</div> -->
+    > Get Route </Button> -->
+
+    <Button
+    on:click={async() => console.log(await AutomathausWebBindMain.testMainBinding())}
+    > Test Main Binding </Button>
+</div>
+
 
 
 <div class="w-full min-h-svh flex items-center justify-center overflow-hidden relative">
