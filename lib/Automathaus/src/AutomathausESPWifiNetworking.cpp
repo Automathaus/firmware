@@ -29,7 +29,15 @@ void AutomathausESPWifiNetworking::setCredentials(const char* ssid, const char* 
 
 // Connect to the WiFi network
 ConnectionStatus AutomathausESPWifiNetworking::connectToNetwork() {
-    WiFi.disconnect();    // Disconnect from any network
+    // Disconnect if connected
+    if(WiFi.status() == WL_CONNECTED) {
+        WiFi.disconnect(true);  // Disconnect and clear credentials
+    }
+    
+    // Stop AP if active
+    if(WiFi.getMode() & WIFI_MODE_AP) {
+        WiFi.softAPdisconnect(true);  // Disconnect AP and clear AP config
+    }
     delay(100); 
 
     if (_ssid == NULL || _password == NULL) {
@@ -37,7 +45,7 @@ ConnectionStatus AutomathausESPWifiNetworking::connectToNetwork() {
         return _connectionStatus;
     }
 
-    WiFi.mode(WIFI_AP_STA);
+    WiFi.mode(WIFI_STA);
     WiFi.begin(_ssid, _password);
 
     if (WiFi.waitForConnectResult() != WL_CONNECTED) {
@@ -156,7 +164,7 @@ void AutomathausESPWifiNetworking::startSetupMode() {
     // }
 
     Serial.println("Starting configuration Access point");
-    WiFi.mode(WIFI_AP_STA);
+    WiFi.mode(WIFI_AP);
     WiFi.softAP(HOSTNAME + randomStr, AP_PASSWORD);
     _dnsServer.start(53, "*", WiFi.softAPIP());
 

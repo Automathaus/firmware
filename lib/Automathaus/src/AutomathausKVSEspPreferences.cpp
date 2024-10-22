@@ -37,25 +37,43 @@ void AutomathausKVSEspPreferences::setNodeType(const char* nodeType) {
 }
 
 String AutomathausKVSEspPreferences::getNodeName() {
-    return _preferences.getString("nodeName", "");
+    if (_preferences.isKey("nodeName")) {
+        return _preferences.getString("nodeName", "");
+    }
+    return "";
 }
 
 String AutomathausKVSEspPreferences::getNodeID() {
-    return _preferences.getString("nodeID", "");
+    if (_preferences.isKey("nodeID")) {
+        return _preferences.getString("nodeID", "");
+    }
+    return "";
 }
 
 String AutomathausKVSEspPreferences::getNodeType() {
-    return _preferences.getString("nodeType", "");
+    if (_preferences.isKey("nodeType")) {
+        return _preferences.getString("nodeType", "");
+    }
+    return "";
 }
 
 String AutomathausKVSEspPreferences::getWifiSSID() {
-    return _preferences.getString("ssid", "");
+    if (_preferences.isKey("ssid")) {
+        return _preferences.getString("ssid", "");
+    }
+    return "";
 }
 
 String AutomathausKVSEspPreferences::getWifiPassword() {
-    return _preferences.getString("password", "");
+    if (_preferences.isKey("password")) {
+        return _preferences.getString("password", "");
+    }
+    return "";
 }
 
 String AutomathausKVSEspPreferences::getOperationalMode() {
-    return _preferences.getString("operationalMode", "");
+    if (_preferences.isKey("operationalMode")) {
+        return _preferences.getString("operationalMode", "");
+    }
+    return "";
 }

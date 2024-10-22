@@ -25,7 +25,7 @@ void Automathaus::start(int serialBaudrate){
 
     ConnectionStatus connectionStatus = NET_SETUP;
 
-    if (_kvStore.getWifiSSID().length() > 0 && _kvStore.getWifiPassword().length() > 0) {
+    if (_kvStore.getWifiSSID().length() > 0 && _kvStore.getWifiPassword().length() > 7) {
         _networking.setCredentials(_kvStore.getWifiSSID().c_str(), _kvStore.getWifiPassword().c_str());
         connectionStatus = _networking.connectToNetwork();
     }
