@@ -100,8 +100,8 @@
     <Card.Root class="w-[23rem] backdrop-blur-md bg-white/80 dark:bg-zinc-950/50 overflow-hidden relative">
 
         {#if showRestartPrompt}
-            <div class="absolute top-0 right-0 h-full w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl z-50 flex flex-col items-center justify-center space-y-4 p-4" transition:blur={{ amount: 10 }}>
-                <div class="flex flex-col items-center justify-center h-full w-full">
+            <div class="absolute top-0 right-0 h-full w-full bg-white/80 dark:bg-zinc-950/90 z-50 flex flex-col items-center justify-center" transition:blur={{ amount: 10 }}>
+                <div class="flex flex-col items-center justify-center h-full w-full backdrop-blur-md">
                     <Save class="h-12 w-12"/>
                     <div class="flex flex-col items-center justify-center space-y-2 mt-6 w-[15rem]">
                         <h2 class="text-lg">Configuration saved!</h2>

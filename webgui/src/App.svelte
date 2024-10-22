@@ -68,7 +68,7 @@
 
 
 <!-- TEST BUTTONS -->
-<div class="flex flex-col absolute top-4 left-4 space-y-4 z-50">
+<!-- <div class="flex flex-col absolute top-4 left-4 space-y-4 z-50">
     <Button
         on:click={async() => console.log(await AutomathausWebBindTest.addInt(2,3))}
     > Add </Button>
@@ -84,7 +84,7 @@
     <Button
     on:click={async() => console.log(await getRoute())}
     > Get Route </Button>
-</div>
+</div> -->
 
 
 <div class="w-full min-h-svh flex items-center justify-center overflow-hidden relative">
