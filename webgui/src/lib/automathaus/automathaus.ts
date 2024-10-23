@@ -80,27 +80,32 @@ export const AutomathausWebBindTest = {
     },
 };
 
-export const AutomathausWebBindMain = {
+export const AutomathausRelayControl = {
     
-    testMainBinding: async(): Promise<void> => {
+    relayControl: async(pin: number, state: boolean): Promise<number | null> => {
         try {
-            let response = await fetch('/bindings/AutomathausWebBindMain/testMainBinding', {
+            let response = await fetch('/bindings/AutomathausRelayControl/relayControl', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({}),
+                body: JSON.stringify({pin, state}),
             });
 
-            // Optionally handle the response
+            if(response.ok){
+                let data = await response.json();
+                return data.returnValue;
+            }
         } catch(e) {
             console.error(e);
         }
+
+        return null;
     },
 };
 
 
 export const bindings = {
     ...AutomathausWebBindTest,
-    ...AutomathausWebBindMain,
+    ...AutomathausRelayControl,
 };

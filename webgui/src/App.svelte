@@ -20,7 +20,7 @@
     import LogoAutomat from "$lib/components/svg/logoAutomat.svelte";
 
     //automathaus
-    import { AutomathausWebBindTest, AutomathausWebBindMain } from "$lib/automathaus/automathaus";
+    import { AutomathausWebBindTest, AutomathausRelayControl} from "$lib/automathaus/automathaus";
     import AnimAutomatLogo from '$lib/components/svg/animAutomatLogo.svelte';
     import { getRoute } from '$lib/automathaus/automathausWebApi';
 
@@ -86,8 +86,12 @@
     > Get Route </Button> -->
 
     <Button
-    on:click={async() => console.log(await AutomathausWebBindMain.testMainBinding())}
-    > Test Main Binding </Button>
+    on:click={async() => console.log(await AutomathausRelayControl.relayControl(16, true))}
+    > Test Relay Control </Button>
+
+    <Button
+    on:click={async() => console.log(await AutomathausRelayControl.relayControl(16, false))}
+    > Test Relay Control Off </Button>
 </div>
 
 

@@ -37,6 +37,7 @@ void Automathaus::start(int serialBaudrate){
         case NET_CONNECTED:
             _state = CONNECTED;
             Serial.println("Connected to network");
+            _networking.findServerIPAddress();
             _webServer.setMode(WEB_SERVER_NORMAL_MODE);
             break;
         case NET_SETUP:

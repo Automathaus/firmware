@@ -188,3 +188,26 @@ void AutomathausESPWifiNetworking::housekeeping(){
         // }
     }
 }
+
+
+void AutomathausESPWifiNetworking::findServerIPAddress(){
+    // Initialize mDNS
+    if (!MDNS.begin(HOSTNAME)) {
+        Serial.println("Error starting mDNS");
+        return;
+    }
+    // Search for all services of the specified type
+    int n = MDNS.queryService(SERVER_SERVICE_NAME, "tcp");
+
+    // save the first IP address found
+    if (n > 0) {
+        Serial.printf("Found Automathaus server at %s\n", MDNS.IP(0).toString().c_str());
+        strncpy(_serverIPAddress, MDNS.IP(0).toString().c_str(), 16);
+    }else{
+        Serial.println("No Automathaus server found");
+    }
+}
+
+char* AutomathausESPWifiNetworking::getServerIPAddress(){
+    return _serverIPAddress;
+}

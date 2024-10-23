@@ -12,7 +12,10 @@ class AutomathausNetworking {
     protected:
         ConnectionStatus _connectionStatus = NET_DISCONNECTED;
 
+        constexpr static const char* SERVER_SERVICE_NAME = "automathaus";
         constexpr static const char* HOSTNAME = "AutomathausNode";
+
+        char _serverIPAddress[16] = {0};
 
         char _IPAddress[16] = {0};
         char _MACAddress[18] = {0};
@@ -31,6 +34,8 @@ class AutomathausNetworking {
 
         virtual void startSetupMode() = 0;
         virtual void setCredentials(const char* ssid, const char* password) = 0;
+        virtual void findServerIPAddress() = 0;
+        virtual char* getServerIPAddress() = 0;
         
         virtual void housekeeping() = 0;
 };

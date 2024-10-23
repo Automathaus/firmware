@@ -1,5 +1,5 @@
-#include "../bindings/mainBind.h"
 #include "../bindings/AutomathausWebBindTest.h"
+#include "../bindings/AutomathausRelayControl.h"
 #include <ArduinoJson.h>
 #include "AutomathausAsyncWebServer.h"
 
@@ -102,10 +102,37 @@ void AutomathausAsyncWebServer::setGeneratedBindings() {
     NULL,
     handleBody);
 
-    // Void function case for AutomathausWebBindMain::testMainBinding
-    _server.on("/bindings/AutomathausWebBindMain/testMainBinding", HTTP_POST, [](AsyncWebServerRequest *request) {
-        AutomathausWebBindMain::testMainBinding();
-        request->send(200, "text/plain", "{\"returnValue\": null}");
+    // Function with return value case for AutomathausRelayControl::relayControl
+    _server.on("/bindings/AutomathausRelayControl/relayControl", HTTP_POST, [](AsyncWebServerRequest *request) { 
+        JsonDocument doc;
+
+        DeserializationError error = deserializeJson(doc, request->_tempObject);
+        if (error) {
+            Serial.println(error.c_str());
+            request->send(400, "application/json", "{\"returnValue\": \"Invalid JSON\"}");
+            return;
+        }
+
+        int v1 = 0;
+        if (doc["pin"].is<int>()) {
+            v1 = doc["pin"].as<int>();
+        } else {
+            request->send(400, "application/json", "{\"error\": \"Invalid or missing 'pin' parameter\"}");
+            return;
+        }
+
+        bool v2 = 0;
+        if (doc["state"].is<bool>()) {
+            v2 = doc["state"].as<bool>();
+        } else {
+            request->send(400, "application/json", "{\"error\": \"Invalid or missing 'state' parameter\"}");
+            return;
+        }
+
+        auto returnValue = AutomathausRelayControl::relayControl(v1, v2);
+
+        std::string response = "{\"returnValue\": " + std::to_string(returnValue) + "}";
+        request->send(200, "application/json", response.c_str());
     },
     NULL,
     handleBody);
