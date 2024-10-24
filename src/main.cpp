@@ -28,7 +28,7 @@ int AutomathausRelayControl::relayControl(int pin, bool state) {
 
 void setup() {
     automathausRelayControl.begin();
-    automathaus.start();
+    automathaus.start("controller");
 }
 
 void loop() {

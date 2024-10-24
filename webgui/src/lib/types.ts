@@ -12,3 +12,11 @@ export type NodeConfig = {
     mode: string;
     configureOtherNodes: boolean;
 }
+
+export type NodeState = {
+    nodeName: string;
+    nodeType: string;
+    ipAddress: string;
+    macAddress: string;
+    automathausServerConnected: boolean;
+}

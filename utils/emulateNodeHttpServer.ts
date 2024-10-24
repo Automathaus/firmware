@@ -6,10 +6,44 @@ const app = express();
 const port: number = 8080;
 
 app.use(cors());
+app.use(express.json()); // Add this line to parse JSON bodies
+
+type NodeState = {
+    nodeName: string;
+    nodeType: string;
+    ipAddress: string;
+    macAddress: string;
+    automathausServerConnected: boolean;
+}
+
+const nodeState: NodeState = {
+    nodeName: "Automathaus node",
+    nodeType: "controller",
+    ipAddress: "192.168.1.100",
+    macAddress: "00:00:00:00:00:00",
+    automathausServerConnected: true
+};
+
+app.get("/getNodeState", (req: Request, res: Response): void => {
+    res.json(nodeState);
+});
+
+app.post("/setNodeName", (req: Request, res: Response): void => {
+    nodeState.nodeName = req.body.nodeName;
+    res.json({ success: true });
+});
+
+app.post("/controlLedBuiltin", (req: Request, res: Response): void => {
+    console.log(req.body.state);
+    res.json({ success: true });
+});
+
+
+
 
 // Routes
 app.get("/getRoute", (req: Request, res: Response): void => {
-    res.json({ route: "/setup" });
+    res.json({ route: "/" });
 });
 
 app.get("/wifiScan", (req: Request, res: Response): void => {

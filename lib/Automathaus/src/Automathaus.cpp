@@ -7,12 +7,11 @@ Automathaus::Automathaus(AutomathausNetworking &networking, AutomathausWebServer
 
 Automathaus::~Automathaus() {}
 
-void Automathaus::start(int serialBaudrate){
+void Automathaus::start(const char* nodeType, int serialBaudrate){
     if (!Serial) {
         Serial.begin(serialBaudrate);
     }
-
-
+    
     Serial.println("===================================================");
     Serial.println("||            Automathaus - version 0.0.1        ||");
     Serial.println("===================================================");
@@ -22,6 +21,8 @@ void Automathaus::start(int serialBaudrate){
         Serial.println("Failed to initialize key-value store");
         return;
     }
+
+    _kvStore.setNodeType(nodeType);
 
     ConnectionStatus connectionStatus = NET_SETUP;
 
@@ -51,6 +52,11 @@ void Automathaus::start(int serialBaudrate){
     Serial.println("Automathaus started");
     _webServer.setWebInterface(INDEX_HTML);
     _webServer.begin(_kvStore);
+
+    #ifdef LED_BUILTIN
+        pinMode(LED_BUILTIN, OUTPUT);
+        digitalWrite(LED_BUILTIN, LOW);
+    #endif
 }
 
 AutomathausState Automathaus::getState(){

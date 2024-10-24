@@ -25,7 +25,7 @@ public:
     Automathaus(AutomathausNetworking &networking, AutomathausWebServer &webServer, AutomathausKeyValueStore &kvStore);
     ~Automathaus();
 
-    void start(int serialBaudrate = 115200);
+    void start(const char* nodeType, int serialBaudrate = 115200);
     void housekeeping();
     AutomathausState getState();
 };

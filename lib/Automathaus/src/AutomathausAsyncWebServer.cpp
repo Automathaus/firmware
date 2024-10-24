@@ -123,6 +123,71 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
     });
 
 
+    _server.on("/controlLedBuiltin", HTTP_POST, [this](AsyncWebServerRequest *request){
+        JsonDocument doc;
+
+        DeserializationError error = deserializeJson(doc, request->_tempObject);
+        if (error) {
+            Serial.println(error.c_str());
+            request->send(400, "application/json", "{\"returnValue\": \"Invalid JSON\"}");
+            return;
+        }
+        
+        bool state = 0;
+        if (doc["state"].is<bool>()) {
+            state = doc["state"].as<bool>();
+        } else {
+            request->send(400, "application/json", "{\"error\": \"Invalid or missing 'state' parameter\"}");
+            return;
+        }
+
+        #ifdef LED_BUILTIN
+            digitalWrite(LED_BUILTIN, state ? HIGH : LOW);
+        #endif
+
+        request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
+    },
+    NULL,
+    handleBody);
+
+    _server.on("/getNodeState", HTTP_GET, [this](AsyncWebServerRequest *request){
+        JsonDocument doc;
+        doc["nodeName"] = _kvStore->getNodeName();
+        doc["nodeType"] = _kvStore->getNodeType();
+        doc["ipAddress"] = _networking.getIPAddress();
+        doc["macAddress"] = _networking.getMACAddress();
+        doc["automathausServerConnected"] = _networking.isConnectedToAutomathausServer();
+
+        String jsonString;
+        serializeJson(doc, jsonString);
+
+        request->send(200, "application/json", jsonString.c_str());
+    });
+
+    _server.on("/setNodeName", HTTP_POST, [this](AsyncWebServerRequest *request){
+        JsonDocument doc;
+
+        DeserializationError error = deserializeJson(doc, request->_tempObject);
+        if (error) {
+            Serial.println(error.c_str());
+            request->send(400, "application/json", "{\"returnValue\": \"Invalid JSON\"}");
+            return;
+        }
+        
+        const char* nodeName;
+        if (doc["nodeName"].is<const char*>()) {
+            nodeName = doc["nodeName"].as<const char*>();
+        } else {
+            request->send(400, "application/json", "{\"error\": \"Invalid or missing 'nodeName' parameter\"}");
+            return;
+        }
+
+        _kvStore->setNodeName(nodeName);
+
+        request->send(200, "application/json", "{\"returnValue\": \"Success\"}");
+    }, NULL, handleBody);
+
+
     _server.onNotFound([](AsyncWebServerRequest *request){
         request->redirect("/");
     });

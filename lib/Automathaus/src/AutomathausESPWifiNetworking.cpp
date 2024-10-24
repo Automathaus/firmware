@@ -203,9 +203,14 @@ void AutomathausESPWifiNetworking::findServerIPAddress(){
     if (n > 0) {
         Serial.printf("Found Automathaus server at %s\n", MDNS.IP(0).toString().c_str());
         strncpy(_serverIPAddress, MDNS.IP(0).toString().c_str(), 16);
+        _connectedToAutomathausServer = true;
     }else{
         Serial.println("No Automathaus server found");
     }
+}
+
+bool AutomathausESPWifiNetworking::isConnectedToAutomathausServer(){
+    return _connectedToAutomathausServer;
 }
 
 char* AutomathausESPWifiNetworking::getServerIPAddress(){

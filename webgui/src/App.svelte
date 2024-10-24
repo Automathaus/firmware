@@ -23,6 +23,7 @@
     import { AutomathausWebBindTest, AutomathausRelayControl} from "$lib/automathaus/automathaus";
     import AnimAutomatLogo from '$lib/components/svg/animAutomatLogo.svelte';
     import { getRoute } from '$lib/automathaus/automathausWebApi';
+    import NodeControl from '$lib/pages/NodeControl.svelte';
 
     let route = "/";
 
@@ -100,13 +101,7 @@
 
     <!-- NORMAL MODE -->
     {#if route === "/"}
-        <div class="flex flex-col align-middle items-center gap-4 rounded-lg border p-6 w-[23rem] backdrop-blur-md bg-white/80 dark:bg-zinc-950/50">
-            <LogoAutomat class="size-12"/>
-            <div class="flex flex-col items-center space-y-1">
-                <h2 class="text-lg leading-none tracking-tight">Automathaus node</h2>
-                <p class="text-muted-foreground text-sm">Node control pannel</p>
-            </div>
-        </div>
+        <NodeControl />
     {:else if route === "/setup"}
         <NodeResetForm />
     {/if}

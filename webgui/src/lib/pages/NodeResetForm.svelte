@@ -29,13 +29,14 @@
 
     //automathaus
     import { setNodeConfig, restartNode } from "$lib/automathaus/automathausWebApi";
+    import DarkmodeButton from "$lib/components/ui/darkmodeButton.svelte";
 
     let showPassword = false;
     
     let formData = {
         selectedNetwork: "",
         password: "",
-        mode: "",
+        mode: "server",
         configureOtherNodes: false
     };
 
@@ -89,6 +90,10 @@
 
     <!-- HEADER -->
     <div class="flex flex-col align-middle items-center gap-4 rounded-lg border p-6 w-[23rem] backdrop-blur-md bg-white/80 dark:bg-zinc-950/50">
+        <div class="absolute top-2 right-2">
+            <DarkmodeButton/>
+        </div>
+
         <LogoAutomat class="size-12"/>
         <div class="flex flex-col items-center space-y-1">
             <h2 class="text-lg leading-none tracking-tight">Automathaus node setup</h2>
@@ -187,7 +192,7 @@
                     <ModeSelector bind:value={formData.mode}/>
                 </div>
 
-                <div class="flex items-center justify-between">
+                <!-- <div class="flex items-center justify-between">
                     <span class="flex align-middle space-x-2">
                         <Label for="otherDev">Configure other nearby nodes</Label>
                         <Popover.Root>
@@ -200,7 +205,7 @@
                         </Popover.Root>
                     </span>
                     <Switch id="otherDev" bind:checked={formData.configureOtherNodes}/>
-                </div>
+                </div> -->
             </div>
         </Card.Content>
         <Card.Footer class="flex justify-between">

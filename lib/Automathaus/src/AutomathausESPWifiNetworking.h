@@ -33,7 +33,8 @@ class AutomathausESPWifiNetworking : public AutomathausWifiNetworking {
         std::string scanWifiNetworks() override;
         void findServerIPAddress() override;
         char* getServerIPAddress() override;
-
+        bool isConnectedToAutomathausServer() override;
+        
         void startSetupMode() override;
         void housekeeping() override;
 };

@@ -15,6 +15,7 @@ class AutomathausNetworking {
         constexpr static const char* SERVER_SERVICE_NAME = "automathaus";
         constexpr static const char* HOSTNAME = "AutomathausNode";
 
+        bool _connectedToAutomathausServer = false;
         char _serverIPAddress[16] = {0};
 
         char _IPAddress[16] = {0};
@@ -36,6 +37,7 @@ class AutomathausNetworking {
         virtual void setCredentials(const char* ssid, const char* password) = 0;
         virtual void findServerIPAddress() = 0;
         virtual char* getServerIPAddress() = 0;
+        virtual bool isConnectedToAutomathausServer() = 0;
         
         virtual void housekeeping() = 0;
 };
