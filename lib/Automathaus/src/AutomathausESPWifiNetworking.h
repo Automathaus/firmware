@@ -3,7 +3,10 @@
 
 #include <Arduino.h>
 #include <DNSServer.h>
+#include <HTTPClient.h>
 #include <ESPmDNS.h>
+#include <ArduinoJson.h>
+
 #ifdef ESP32
 #include <WiFi.h>
 #elif defined(ESP8266)
@@ -31,9 +34,11 @@ class AutomathausESPWifiNetworking : public AutomathausWifiNetworking {
         ConnectionStatus getConnectionStatus() override;
         
         std::string scanWifiNetworks() override;
-        void findServerIPAddress() override;
+        bool findServerIPAddress() override;
         char* getServerIPAddress() override;
+
         bool isConnectedToAutomathausServer() override;
+        int registerNode(char *idBuffer, const char* nodeName, const char* nodeType) override;
         
         void startSetupMode() override;
         void housekeeping() override;

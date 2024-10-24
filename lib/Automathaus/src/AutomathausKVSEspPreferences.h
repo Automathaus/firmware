@@ -8,6 +8,7 @@ class AutomathausKVSEspPreferences : public AutomathausKeyValueStore {
     private:
         Preferences _preferences;
         String _nodeType;
+        char _nodeID[16] = {0};
 
     public:
         AutomathausKVSEspPreferences();

@@ -44,7 +44,7 @@ void Automathaus::start(const char* nodeType, int serialBaudrate){
         case NET_CONNECTED:
             _state = CONNECTED;
             Serial.println("Connected to network");
-            _networking.findServerIPAddress();
+            connectToAutomathausServer();
             _webServer.setMode(WEB_SERVER_NORMAL_MODE);
             break;
         case NET_SETUP:
@@ -72,5 +72,20 @@ AutomathausState Automathaus::getState(){
 void Automathaus::housekeeping(){
     if(_state == NODE_SETUP){
         _networking.housekeeping();
+    }
+}
+
+
+
+void Automathaus::connectToAutomathausServer(){
+    if (_networking.findServerIPAddress()) {
+        char idBuffer[16] = {0};
+        if (_networking.registerNode(idBuffer, _kvStore.getNodeName().c_str(), _kvStore.getNodeType().c_str()) == 0) {
+            Serial.println("Node registered with id: ");
+            Serial.println(idBuffer);
+            _kvStore.setNodeID(idBuffer);
+        }else{
+            Serial.println("Error registering node");
+        }
     }
 }

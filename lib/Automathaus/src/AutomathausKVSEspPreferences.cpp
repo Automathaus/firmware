@@ -20,7 +20,7 @@ void AutomathausKVSEspPreferences::setNodeName(const char* nodeName) {
 }
 
 void AutomathausKVSEspPreferences::setNodeID(const char* nodeID) {
-    _preferences.putString("nodeID", nodeID);
+    strncpy(_nodeID, nodeID, 15);
 }
 
 void AutomathausKVSEspPreferences::setWifiCredentials(const char* ssid, const char* password) {
@@ -44,10 +44,7 @@ String AutomathausKVSEspPreferences::getNodeName() {
 }
 
 String AutomathausKVSEspPreferences::getNodeID() {
-    if (_preferences.isKey("nodeID")) {
-        return _preferences.getString("nodeID", "");
-    }
-    return "";
+    return _nodeID;
 }
 
 String AutomathausKVSEspPreferences::getNodeType() {

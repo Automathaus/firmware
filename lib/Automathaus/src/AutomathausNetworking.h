@@ -16,6 +16,7 @@ class AutomathausNetworking {
 
         bool _connectedToAutomathausServer = false;
         char _serverIPAddress[16] = {0};
+        int _serverPort = 8090;
 
         char _IPAddress[16] = {0};
         char _MACAddress[18] = {0};
@@ -36,9 +37,11 @@ class AutomathausNetworking {
         virtual void startSetupMode() = 0;
         virtual void setCredentials(const char* ssid, const char* password) = 0;
 
-        virtual void findServerIPAddress() = 0;
+        virtual bool findServerIPAddress() = 0;
         virtual char* getServerIPAddress() = 0;
+
         virtual bool isConnectedToAutomathausServer() = 0;
+        virtual int registerNode(char *idBuffer, const char* nodeName, const char* nodeType) = 0;
         
         virtual void housekeeping() = 0;
 };

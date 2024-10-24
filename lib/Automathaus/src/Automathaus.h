@@ -21,6 +21,7 @@ private:
     AutomathausKeyValueStore &_kvStore;
     AutomathausState _state;
 
+    void connectToAutomathausServer();
 public:
     Automathaus(AutomathausNetworking &networking, AutomathausWebServer &webServer, AutomathausKeyValueStore &kvStore);
     ~Automathaus();

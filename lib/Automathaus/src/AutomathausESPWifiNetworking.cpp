@@ -190,11 +190,11 @@ void AutomathausESPWifiNetworking::housekeeping(){
 }
 
 
-void AutomathausESPWifiNetworking::findServerIPAddress(){
+bool AutomathausESPWifiNetworking::findServerIPAddress(){
     // Initialize mDNS
     if (!MDNS.begin(HOSTNAME)) {
         Serial.println("Error starting mDNS");
-        return;
+        return false;
     }
     // Search for all services of the specified type
     int n = MDNS.queryService(SERVER_SERVICE_NAME, "tcp");
@@ -203,10 +203,14 @@ void AutomathausESPWifiNetworking::findServerIPAddress(){
     if (n > 0) {
         Serial.printf("Found Automathaus server at %s\n", MDNS.IP(0).toString().c_str());
         strncpy(_serverIPAddress, MDNS.IP(0).toString().c_str(), 16);
+        _serverPort = MDNS.port(0);
         _connectedToAutomathausServer = true;
     }else{
         Serial.println("No Automathaus server found");
+        _connectedToAutomathausServer = false;
     }
+
+    return _connectedToAutomathausServer;
 }
 
 bool AutomathausESPWifiNetworking::isConnectedToAutomathausServer(){
@@ -215,4 +219,43 @@ bool AutomathausESPWifiNetworking::isConnectedToAutomathausServer(){
 
 char* AutomathausESPWifiNetworking::getServerIPAddress(){
     return _serverIPAddress;
+}
+
+int AutomathausESPWifiNetworking::registerNode(char *idBuffer,const char* nodeName, const char* nodeType){
+    HTTPClient http;
+    http.begin(_serverIPAddress, _serverPort, "/registerNode");
+    http.addHeader("Content-Type", "application/json");
+
+    JsonDocument docRequest;
+    docRequest["nodeName"] = nodeName;
+    docRequest["ip"] = _IPAddress;
+    docRequest["macAddress"] = _MACAddress;
+    docRequest["nodeType"] = nodeType;
+
+    std::string jsonString;
+    serializeJson(docRequest, jsonString);
+    int httpResponseCode = http.POST(jsonString.c_str());
+    
+    String response;
+    if(httpResponseCode == 200){
+        response = http.getString();
+        JsonDocument docResponse;
+
+        DeserializationError error = deserializeJson(docResponse, response.c_str());
+        if (error) {
+            Serial.println(error.c_str());
+            return -1;
+        }
+
+        const char* id = docResponse["id"];
+        if (id != NULL) {
+            strncpy(idBuffer, id, 15);
+        }
+    }else{
+        Serial.println("Error registering node:");
+        Serial.println(httpResponseCode + " - " + response);
+        return -1;
+    }
+
+    return 0;
 }

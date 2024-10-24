@@ -158,7 +158,7 @@ void AutomathausAsyncWebServer::setWebInterface(const char *webPage){
         doc["macAddress"] = _networking.getMACAddress();
         doc["automathausServerConnected"] = _networking.isConnectedToAutomathausServer();
 
-        String jsonString;
+        std::string jsonString;
         serializeJson(doc, jsonString);
 
         request->send(200, "application/json", jsonString.c_str());
