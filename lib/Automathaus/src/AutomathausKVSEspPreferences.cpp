@@ -33,7 +33,7 @@ void AutomathausKVSEspPreferences::setOperationalMode(const char* operationalMod
 }
 
 void AutomathausKVSEspPreferences::setNodeType(const char* nodeType) {
-    _preferences.putString("nodeType", nodeType);
+    _nodeType = nodeType;
 }
 
 String AutomathausKVSEspPreferences::getNodeName() {
@@ -51,10 +51,7 @@ String AutomathausKVSEspPreferences::getNodeID() {
 }
 
 String AutomathausKVSEspPreferences::getNodeType() {
-    if (_preferences.isKey("nodeType")) {
-        return _preferences.getString("nodeType", "");
-    }
-    return "";
+    return _nodeType;
 }
 
 String AutomathausKVSEspPreferences::getWifiSSID() {

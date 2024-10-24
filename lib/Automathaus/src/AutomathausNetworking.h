@@ -13,7 +13,6 @@ class AutomathausNetworking {
         ConnectionStatus _connectionStatus = NET_DISCONNECTED;
 
         constexpr static const char* SERVER_SERVICE_NAME = "automathaus";
-        constexpr static const char* HOSTNAME = "AutomathausNode";
 
         bool _connectedToAutomathausServer = false;
         char _serverIPAddress[16] = {0};
@@ -22,6 +21,8 @@ class AutomathausNetworking {
         char _MACAddress[18] = {0};
         
     public:
+        constexpr static const char* HOSTNAME = "AutomathausNode";
+        
         AutomathausNetworking() {};
         virtual ~AutomathausNetworking() {};
 
@@ -29,12 +30,12 @@ class AutomathausNetworking {
         virtual char* getMACAddress() = 0;
         
         virtual ConnectionStatus connectToNetwork() = 0;
-        virtual void disconnectFromNetwork() = 0;
-
         virtual ConnectionStatus getConnectionStatus() = 0;
+        virtual void disconnectFromNetwork() = 0;
 
         virtual void startSetupMode() = 0;
         virtual void setCredentials(const char* ssid, const char* password) = 0;
+
         virtual void findServerIPAddress() = 0;
         virtual char* getServerIPAddress() = 0;
         virtual bool isConnectedToAutomathausServer() = 0;

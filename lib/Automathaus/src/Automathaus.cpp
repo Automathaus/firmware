@@ -24,6 +24,12 @@ void Automathaus::start(const char* nodeType, int serialBaudrate){
 
     _kvStore.setNodeType(nodeType);
 
+    if (_kvStore.getNodeName().length() == 0) {
+        char nodeName[20] = {0};
+        snprintf(nodeName, sizeof(nodeName), "%s%d", AutomathausNetworking::HOSTNAME, random(0, 9999));
+        _kvStore.setNodeName(nodeName);
+    }
+
     ConnectionStatus connectionStatus = NET_SETUP;
 
     if (_kvStore.getWifiSSID().length() > 0 && _kvStore.getWifiPassword().length() > 7) {

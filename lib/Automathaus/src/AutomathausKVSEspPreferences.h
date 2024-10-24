@@ -6,9 +6,10 @@
 
 class AutomathausKVSEspPreferences : public AutomathausKeyValueStore {
     private:
+        Preferences _preferences;
+        String _nodeType;
 
     public:
-        Preferences _preferences;
         AutomathausKVSEspPreferences();
         virtual ~AutomathausKVSEspPreferences();
 
