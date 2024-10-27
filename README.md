@@ -1,4 +1,6 @@
 # Automathaus - ESP32
+![Automathausbanner](https://github.com/user-attachments/assets/f3dce392-9f22-48c1-bc1b-af33208db820)
+
 Firmware for for Automathaus domotic system.
 
 ### Features
